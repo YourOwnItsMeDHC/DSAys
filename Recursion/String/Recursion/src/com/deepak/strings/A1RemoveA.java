@@ -44,7 +44,7 @@ public class A1RemoveA {
 
 
 
-    
+
     //Method, which, which return string with skiped 'a' character
     public static String skipp(String s) {
         if(s == "") {
