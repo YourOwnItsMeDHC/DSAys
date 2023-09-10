@@ -1,7 +1,7 @@
 //Skkiping a character - Skip a character, whenever we encunter 'a'
 
 package com.deepak.strings;
-public class A1RemoveA {
+public class A1SkipCharacter {
     public static void main(String[] args) {
         String s = "abcaabbacbcac";
 
