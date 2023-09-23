@@ -18,6 +18,7 @@ public class AOperations {
 
         System.out.println(st);            //[10, 20, 30, 40, 50]
 
+        // It won't delete top element, it will just return or display that top element
         System.out.println(st.peek());     //50
 
         System.out.println(st);            //[10, 20, 30, 40, 50]
@@ -76,6 +77,7 @@ public class AOperations {
 
         Stack<Integer> st2 = new Stack<>();
         System.out.println(st2);                     //[]
+
 
         while(st1.size() > 3) {
             st2.push(st1.pop());
