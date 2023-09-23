@@ -16,14 +16,15 @@ public class BGetElementWithoutAffectingStack {
         Stack<Integer> st2 = new Stack<>();
         System.out.println(st2);                     //[]
 
+        // Element which are at 3rd position
         while(st1.size() > 3) {
             st2.push(st1.pop());
         }
 
-        System.out.println(st1.peek());              //30
-        System.out.println(st1);                     //[10, 20, 30]      - Affected stack
+        System.out.println(st1.peek());          //30
+        System.out.println(st1);                 //[10, 20, 30]  - Affected stack
 
-        System.out.println(st2);                     //[50, 40]          - Elements which were removed during operation
+        System.out.println(st2);                 //[50, 40]      - Elements which were removed during operation
 
         //Pushing popped element again back to our st1
         while(st2.size() > 0) {
