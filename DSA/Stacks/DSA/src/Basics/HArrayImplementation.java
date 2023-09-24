@@ -19,7 +19,7 @@ public class HArrayImplementation {
 
         System.out.println(st.peek());         // 50
 
-        st.pop();                              // 50 has been pushed
+        st.pop();                              // 50 has been popped
 
         st.display();                          // 10 20 30 40
 
