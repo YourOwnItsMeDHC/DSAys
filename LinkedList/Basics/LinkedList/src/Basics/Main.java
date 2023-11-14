@@ -8,5 +8,7 @@ public class Main {
         list.insertFirst(30);
         list.insertFirst(40);
         list.insertFirst(50);
+
+        list.display();
     }
 }
