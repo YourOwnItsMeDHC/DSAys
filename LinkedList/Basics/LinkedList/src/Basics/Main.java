@@ -8,7 +8,10 @@ public class Main {
         list.insertFirst(30);
         list.insertFirst(40);
         list.insertFirst(50);
+        list.display();               // 50->40->30->20->10->END
 
-        list.display();
+        list.insertLast(5);
+        list.insertLast(6);
+        list.display();              // 50->40->30->20->10->5->6->END
     }
 }
