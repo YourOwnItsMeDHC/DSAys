@@ -13,5 +13,8 @@ public class Main {
         list.insertLast(5);
         list.insertLast(6);
         list.display();              // 50->40->30->20->10->5->6->END
+
+        list.insert(79, 3);
+        list.display();              // 50->40->30->79->20->10->5->6->END
     }
 }

@@ -55,6 +55,26 @@ public class LL {
         size += 1;
     }
 
+    public void insert(int val, int index) {
+        if(index == 0) {
+            insertFirst(val);
+            return;
+        }
+        if(index == size) {
+            insertLast(val);
+            return;
+        }
+        Node temp = head;
+        // Now temp reference pointer is pointing at index 0, which by default is pointed by head as well
+        for(int i=1; i<index; i++) {
+            temp = temp.next;
+        }
+
+        Node node = new Node(val, temp.next);
+        temp.next = node;
+        size +=1 ;
+    }
+
     public void display() {
         Node temp = head;
 
