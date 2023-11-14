@@ -88,6 +88,18 @@ public class LL {
         return value;
     }
 
+    public int deleteLastD() {
+        Node temp = head;
+        while(temp.next.next != null) {
+            temp = temp.next;
+        }
+        int value = temp.next.val;
+
+        temp.next = null;
+        size -= 1;
+        return value;
+    }
+
     public void display() {
         Node temp = head;
 
