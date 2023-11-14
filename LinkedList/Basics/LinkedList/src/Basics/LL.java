@@ -75,6 +75,19 @@ public class LL {
         size +=1 ;
     }
 
+    public int deleteFirst() {
+        // Getting val, just to return it i.e. which node I have deleted
+        int value = head.val;
+        head = head.next;
+
+        // Might possible that LL is already empty
+        if(head == null) {
+            tail = null;
+        }
+        size -=1;
+        return value;
+    }
+
     public void display() {
         Node temp = head;
 
