@@ -109,6 +109,12 @@ public class LL {
     }
 
    public int delete(int index) {
+        if(index == 0) {
+            return deleteFirst();
+        }
+        if(index == size-1) {
+            return deleteLastD();
+        }
         Node prev = get(index-1);
         int value = prev.next.val;
         prev.next = prev.next.next;
