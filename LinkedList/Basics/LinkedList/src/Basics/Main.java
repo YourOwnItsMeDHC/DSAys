@@ -30,5 +30,9 @@ public class Main {
         list.display();                                          // 40->30->20->5->END
         System.out.println("Deleted Item is : " + deletedItem);  // Deleted Item is : 79
 
+        list.deleteLast();
+        list.display();              // 40->30->20->END
+        list.deleteLast();
+        list.display();              // 40->30->END
     }
 }

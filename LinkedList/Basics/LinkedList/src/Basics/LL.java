@@ -122,6 +122,18 @@ public class LL {
         return value;
    }
 
+   public int deleteLast() {
+        if(size <= 1) {
+            return deleteFirst();
+        }
+        Node secondLast = get(size - 2);
+        int value = tail.val;
+        tail = secondLast;
+        tail.next = null;
+        size -= 1;
+        return value;
+   }
+
     public void display() {
         Node temp = head;
 
