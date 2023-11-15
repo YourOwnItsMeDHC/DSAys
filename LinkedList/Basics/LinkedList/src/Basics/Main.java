@@ -22,5 +22,8 @@ public class Main {
 
         list.deleteLastD();
         list.display();              // 40->30->79->20->10->5->END
+
+        list.delete(4);
+        list.display();              // 40->30->79->20->5->END
     }
 }

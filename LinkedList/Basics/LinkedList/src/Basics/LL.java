@@ -100,6 +100,22 @@ public class LL {
         return value;
     }
 
+    public Node get(int index) {
+        Node node = head;
+        for(int i=0; i<index; i++) {
+            node = node.next;
+        }
+        return node;
+    }
+
+   public int delete(int index) {
+        Node prev = get(index-1);
+        int value = prev.next.val;
+        prev.next = prev.next.next;
+        size -= 1;
+        return value;
+   }
+
     public void display() {
         Node temp = head;
 
