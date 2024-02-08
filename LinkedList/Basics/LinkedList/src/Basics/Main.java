@@ -112,5 +112,20 @@ public class Main {
 
         list3.delete(700);
         list3.display();                  // 200->300->400->500->600->800->HEAD
+
+
+//        Recursive Insertion
+        LL list4 = new LL();
+
+        list4.insertFirst(10);
+        list4.insertFirst(20);
+        list4.insertFirst(30);
+        list4.insertFirst(40);
+        list4.insertFirst(50);
+        System.out.println();
+        list4.display();               // 50->40->30->20->10->END
+
+        list4.insertRecur(79, 3);
+        list4.display();               // 50->40->30->79->20->10->END
     }
 }

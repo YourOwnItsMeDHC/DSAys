@@ -133,7 +133,6 @@ public class DNextGreaterElement {
             }
             st.push(nums[i]);
         }
-
         return res;
     }
 }

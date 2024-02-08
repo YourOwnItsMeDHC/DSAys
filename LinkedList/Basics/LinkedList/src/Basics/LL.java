@@ -75,6 +75,25 @@ public class LL {
         size +=1 ;
     }
 
+
+
+
+//    Insert a specific node provided with the value and the index where it has to be
+    public void insertRecur(int val, int index) {
+        head = insertRecur(val, index, head);
+    }
+
+    public Node insertRecur(int val, int index, Node node) {
+        if(index == 0) {
+            Node temp = new Node(val, node);
+            size++;
+            return temp;
+        }
+
+        node.next = insertRecur(val, index-1, node.next);
+        return node;
+    }
+
     public int deleteFirst() {
         // Getting val, just to return it i.e. which node I have deleted
         int value = head.val;

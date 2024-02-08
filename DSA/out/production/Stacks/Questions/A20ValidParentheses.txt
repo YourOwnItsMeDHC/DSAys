@@ -1,0 +1,37 @@
+/*
+
+My Video Solution : https://youtu.be/FEgbVgc9p9M?feature=shared
+
+My LeetCode Solution : https://leetcode.com/problems/valid-parentheses/solutions/2398609/short-java-solution-full-explanation-with-dry-run-of-an-example/
+
+*/
+
+class Solution {
+    public boolean isValid(String s) {
+ 
+      // If length is odd, then it's obvious, it's not valid
+      if(s.length() % 2 != 0) {
+        return false;
+      }
+        
+        Stack<Character> stack = new Stack<>();
+
+        for(char ch : s.toCharArray()) {
+            if(ch == '(') {
+                stack.push(')');
+            }
+            else if(ch == '[') {
+                stack.push(']');
+            }
+            else if(ch == '{') {
+                stack.push('}');
+            }
+            else if(stack.isEmpty() || stack.pop() != ch) {
+                return false;
+            }
+        }
+
+        return stack.isEmpty();
+
+    }
+}

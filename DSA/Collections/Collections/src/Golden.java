@@ -75,5 +75,8 @@ public class Golden {
         while(itr.hasNext()) {
             System.out.println(itr.next());
         }
+
+
+
     }
 }
