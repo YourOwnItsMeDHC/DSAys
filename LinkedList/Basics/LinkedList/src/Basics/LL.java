@@ -80,19 +80,26 @@ public class LL {
 
 //    Insert a specific node provided with the value and the index where it has to be
     public void insertRecur(int val, int index) {
+        // At the last recursion call, it will say that head will point to which specific node
         head = insertRecur(val, index, head);
+        // Here, the third argument is passed as head node, because, I will stgart my recursion call from head itself
     }
 
     public Node insertRecur(int val, int index, Node node) {
         if(index == 0) {
+            // I am now at a position where my node has to be there, so whatever node which was there already will ahead
+            // Hence that already present node will be the next node of my node
             Node temp = new Node(val, node);
             size++;
             return temp;
         }
 
+        // After insertion of a specif node, recursion all is going back again
+        // Saying that I have a node which is next to you, means, I am you next node
         node.next = insertRecur(val, index-1, node.next);
         return node;
     }
+
 
     public int deleteFirst() {
         // Getting val, just to return it i.e. which node I have deleted
