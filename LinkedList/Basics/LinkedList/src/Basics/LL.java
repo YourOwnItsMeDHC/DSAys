@@ -100,7 +100,6 @@ public class LL {
         return node;
     }
 
-
     public int deleteFirst() {
         // Getting val, just to return it i.e. which node I have deleted
         int value = head.val;

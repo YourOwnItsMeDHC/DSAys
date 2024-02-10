@@ -1,0 +1,62 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+//  https://algo.monster/liteproblems/83
+
+/* 
+Intuition :
+
+The intuition behind the solution comes from the fact that the linked list is already sorted.
+Since the linked list is sorted, all duplicates of a particular value will be
+adjacent to each other.
+We can simply traverse the linked list from the head to the end, and for each node,
+we check if its value is the same as the value of the next node.
+If it is, we have found a duplicate, and we need to remove the next node by changing pointers.
+We update the current node's next pointer to the next node's next pointer,
+effectively skipping over the duplicate node and removing it from the list.
+If the values are not identical, we move on to the next node.
+We repeat this process until we have checked all nodes.
+
+
+
+Time and Space Complexity -
+
+The time complexity of the provided code is O(n), where n is the number of nodes in the
+linked list. This is because it involves a single traversal through all the nodes of the list,
+and for each node, it performs a constant amount of work by checking if the next node has a
+duplicate value and potentially skipping over duplicates.
+
+The space complexity of the code is O(1), as it only uses a fixed amount of additional memory
+for the cur pointer. No extra space proportional to the size of the input is needed,
+whatever the size of the linked list is.
+*/
+
+class Solution {
+    public ListNode deleteDuplicates(ListNode node) {
+        if(node == null) {
+            return node;
+        }
+        ListNode head = node;
+        while(node.next != null) {
+            if(node.val == node.next.val) {
+                // If the current node's value equals the next node's value, skip the next node
+                node.next = node.next.next;
+            }
+            else {
+                // Otherwise, move to the next node
+                node = node.next;
+            }
+        }
+
+        // Return the head of the modified list
+        return head;
+    }
+}
