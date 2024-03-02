@@ -1,0 +1,75 @@
+// Find length of loop/cycle in given Linked List
+// problem & solution : https://www.geeksforgeeks.org/find-length-of-loop-in-linked-list/
+/*
+
+class Node
+{
+    int data;
+    Node next;
+    Node(int d) {data = d; next = null; }
+}
+
+*/
+
+
+// Approach - 01 : SLow and Fast pointer / Tortoise and Hare Algorithm / Floyd's Cycle Detection Algorithm
+/*
+class Solution {
+    static int countNodesinLoop(Node head) {
+        if(head == null) {
+            return -1;
+        }
+        
+        Node slow = head;
+        Node fast = head;
+        
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            
+            if(slow == fast) {
+                Node temp = slow;
+                
+                int length = 0;
+                do {
+                    temp = temp.next;
+                    length += 1;
+                }
+                while(temp != slow);
+                return length;
+            }
+        }
+        return 0;
+    }
+}
+*/
+
+
+// Approach - 02 : Using HashSet
+class Solution {
+    static int countNodesinLoop(Node head) {
+        if(head == null) {
+            return 0;
+        }
+        
+        HashSet<Node> visited = new HashSet<>();
+        Node curr = head;
+        
+        while(curr != null) {
+            if(visited.contains(curr)) {
+                Node temp = curr;
+                int length = 0;
+                do {
+                    temp = temp.next;
+                    length += 1;
+                }
+                while(temp != curr);
+                return length;
+            }
+            visited.add(curr);
+            curr = curr.next;
+        }
+        
+        return 0;
+    }
+}
