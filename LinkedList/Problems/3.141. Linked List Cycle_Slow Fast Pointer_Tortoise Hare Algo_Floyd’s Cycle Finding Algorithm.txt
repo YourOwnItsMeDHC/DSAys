@@ -49,7 +49,8 @@ public class Solution {
 
 
 
-
+// Approach - 01 : SLow and Fast pointer / Tortoise and Hare Algorithm / Floyd's Cycle Detection Algorithm
+/*
 public class Solution {
     public boolean hasCycle(ListNode head) {
         if(head == null) {
@@ -67,6 +68,37 @@ public class Solution {
             }
         }
 
+        return false;
+    }
+}
+*/
+
+
+
+
+
+
+
+
+
+// Approach - 02 : Using HashSet
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if(head == null) {
+            return false;
+        }
+
+        HashSet<ListNode> visited = new HashSet<>();
+        ListNode curr = head;
+
+        while(curr != null) {
+            if(visited.contains(curr)) {  // It means cycle exits
+            return true;
+            }
+
+            visited.add(curr);
+            curr = curr.next;
+        }
         return false;
     }
 }
