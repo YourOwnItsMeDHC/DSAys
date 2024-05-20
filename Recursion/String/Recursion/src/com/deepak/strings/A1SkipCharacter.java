@@ -64,7 +64,5 @@ public class A1SkipCharacter {
             return ch + skipp(s.substring(1));
         }
     }
-
-
 }
 

@@ -1,0 +1,140 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+/*
+Problem Statement
+Given a linked list, return the node where the cycle begins. If there is no cycle,
+return null.
+
+To represent a cycle in the given linked list, we use an integer pos which represents
+the position (0-indexed) in the linked list where the tail connects to.
+If pos is -1, then there is no cycle.
+
+Approach 1: Using HashSet
+
+Explanation
+
+Traverse the linked list and use a HashSet to store the nodes.
+For each node, check if it is already in the HashSet.
+
+If it is, then it means we have found the start of the cycle.
+
+If we reach the end of the list (null), then there is no cycle.
+
+Time and Space Complexity
+Time Complexity: O(n), where n is the number of nodes in the linked list.
+We traverse each node at most once.
+
+Space Complexity: O(n), as we use a HashSet to store nodes.
+*/
+
+
+// Approach 1: Using HashSet
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+       if(head == null || head.next == null) {
+        return null;
+       }
+
+       Set<ListNode> visitedNodes = new HashSet<>();
+       ListNode curr = head;
+
+       while(curr != null) {
+        if(visitedNodes.contains(curr)) {
+            return curr;
+        }
+        visitedNodes.add(curr);
+        curr = curr.next;
+       }
+
+       return null;
+    }
+}
+
+// Dry Run Example
+// Consider a linked list: 3 -> 2 -> 0 -> -4 with a cycle at node with value 2.
+
+// Initial positions: slow at 3, fast at 3.
+// Move slow to 2, fast to 0.
+// Move slow to 0, fast to 2.
+// Move slow to -4, fast to -4 (they meet).
+// Move slow to head (3), fast remains at -4.
+// Move both pointers one step at a time: slow to 2, fast to 2.
+// They meet at 2, which is the start of the cycle.
+
+// Dry Run Example
+// Consider a linked list: 3 -> 2 -> 0 -> -4 with a cycle at node with value 2.
+
+// Start at node 3, add 3 to HashSet.
+// Move to node 2, add 2 to HashSet.
+// Move to node 0, add 0 to HashSet.
+// Move to node -4, add -4 to HashSet.
+// Move to node 2 again, 2 is already in the HashSet, so we return 2.
+
+
+
+
+
+
+
+
+
+// Approach 2: Floyd's Tortoise and Hare Algorithm
+
+// Explanation
+// Use two pointers, slow and fast.
+// Move slow by one step and fast by two steps.
+// If there is a cycle, slow and fast will eventually meet inside the cycle.
+// To find the entry point, move slow to the head and keep fast at the meeting point.
+// Move both pointers one step at a time; the node where they meet again is the start of the cycle.
+
+// Time and Space Complexity
+
+// Time Complexity: O(n), where n is the number of nodes in the linked list.
+// Both pointers traverse the list.
+
+// Space Complexity: O(1), as we only use two pointers and no additional space.
+
+// Approach 2: Floyd's Tortoise and Hare Algorithm
+
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+       if(head == null) {
+        return null;
+       }
+
+       ListNode slow = head;
+       ListNode fast = head;
+
+       while(fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+
+        if(slow == fast) {
+            // Cycle exists - found
+            slow = head;
+            while(slow != fast) {
+                slow = slow.next;
+                fast = fast.next;
+            }
+            return slow;
+        }
+       }
+       return null;
+    }
+}
+
+// Intuition - i.e. why putting slow at head and fast at meeting point 
+// and then moving both simultaneously, after a specific time
+// It will give us the starting node of the cycle
+// https://youtu.be/vlrxs-LPni4?feature=shared
+// Page - 43 (Must Check)
