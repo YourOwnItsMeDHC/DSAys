@@ -1,0 +1,191 @@
+// 202. Happy Number
+// https://leetcode.com/problems/happy-number/
+
+// What is a Happy Number?
+// A Happy Number is defined by the following process:
+
+// Start with any positive integer.
+// Replace the number with the sum of the squares of its digits.
+// Repeat the process until the number equals 1 (where it will stay),
+// or it loops endlessly in a cycle that does not include 1.
+// A number for which this process ends in 1 is called a Happy Number.
+// For example, 19 is a Happy Number:
+
+// 1² + 9² = 1 + 81 = 82
+// 8² + 2² = 64 + 4 = 68
+// 6² + 8² = 36 + 64 = 100
+// 1² + 0² + 0² = 1
+
+
+// 1. HashSet Approach [Easy Approacj]
+
+
+// Explanation:
+// We use a HashSet to store numbers we've seen before to detect cycles.
+// If we encounter a number that's already in the HashSet,
+// we know we're in a cycle and can conclude that the number is not a Happy Number.
+
+// Algorithm:
+
+// Initialize an empty HashSet.
+// Calculate the sum of the squares of the digits.
+// If the sum is 1, return true.
+// If the sum is already in the HashSet, return false (cycle detected).
+// Otherwise, add the sum to the HashSet and repeat from step 2.
+// Time Complexity: O(log n)
+
+// In the worst case, the function could run indefinitely, but on average, it converges quickly.
+// Space Complexity: O(log n)
+
+// The space complexity depends on the number of unique numbers encountered in the process.
+
+
+class Solution {
+    public boolean isHappy(int n) {
+        Set<Integer> seenNumbers = new HashSet<>();
+
+        while(n != 1 && !seenNumbers.contains(n)) {
+            seenNumbers.add(n);
+            n = sumOfSquares(n);
+        }
+
+        return n == 1;
+    }
+
+    public int sumOfSquares(int n) {
+        int sum = 0, rem = 0;
+        while(n > 0) {
+            rem = n % 10;
+            sum += (rem * rem);
+            n /= 10;
+        }
+        return sum;
+    }
+}
+
+
+
+// Dry Run Example:
+// For n = 19:
+
+// Initial number: 19
+// Sum of squares: 1² + 9² = 1 + 81 = 82 (Add 19 to HashSet)
+// Sum of squares: 8² + 2² = 64 + 4 = 68 (Add 82 to HashSet)
+// Sum of squares: 6² + 8² = 36 + 64 = 100 (Add 68 to HashSet)
+// Sum of squares: 1² + 0² + 0² = 1 (Add 100 to HashSet)
+// Since the sum is 1, return true.
+// For n = 2:
+
+// Initial number: 2
+// Sum of squares: 2² = 4 (Add 2 to HashSet)
+// Sum of squares: 4² = 16 (Add 4 to HashSet)
+// Sum of squares: 1² + 6² = 1 + 36 = 37 (Add 16 to HashSet)
+// Sum of squares: 3² + 7² = 9 + 49 = 58 (Add 37 to HashSet)
+// Sum of squares: 5² + 8² = 25 + 64 = 89 (Add 58 to HashSet)
+// Sum of squares: 8² + 9² = 64 + 81 = 145 (Add 89 to HashSet)
+// Sum of squares: 1² + 4² + 5² = 1 + 16 + 25 = 42 (Add 145 to HashSet)
+// Sum of squares: 4² + 2² = 16 + 4 = 20 (Add 42 to HashSet)
+// Sum of squares: 2² + 0² = 4 (4 is already in HashSet, so return false)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Must check 44 and 45
+
+// 2. Floyd's Cycle Detection Algorithm (Tortoise and Hare) - [Space- efficient approach]
+
+
+// Explanation:
+
+// Floyd's Cycle Detection Algorithm is used to detect cycles in sequences without
+// using extra space. The algorithm uses two pointers moving at different speeds
+// (slow and fast). If there is a cycle, the fast pointer will eventually meet
+// the slow pointer.
+
+// Algorithm:
+
+// Initialize two pointers slow and fast.
+// Move slow by one step and fast by two steps.
+// If fast equals 1, return true.
+// If slow equals fast, return false (cycle detected).
+// Repeat from step 2.
+
+// Time Complexity: O(log n)
+// The number of iterations needed to either find a cycle or reach 1 is logarithmic.
+
+// Space Complexity: O(1)
+// This approach uses a constant amount of extra space.
+
+
+class Solution {
+    public boolean isHappy(int n) {
+       int slow = n;
+       int fast = n;
+
+       do{
+        slow = sumOfSquares(slow);
+        fast = sumOfSquares(sumOfSquares(fast));
+        if(fast == 1) return true; // Early termination
+        // Without these as well, code wil work
+        //Because, if I foundfast as 1, so after sometime I will get slow also as 1
+        // At that point , while loop will end
+       }
+       while(slow != fast);
+
+       return slow == 1;
+    }
+
+    public int sumOfSquares(int n) {
+        int sum = 0;
+        while(n > 0) {
+            int rem = n % 10;
+            sum += (rem * rem);
+            n /= 10;
+        }
+        return sum;
+    }
+}
+
+
+
+
+// Dry Run Example:
+// For n = 19:
+
+// Initial number: slow = 19, fast = 19
+// Step 1: slow = 82, fast = 68
+// Step 2: slow = 68, fast = 1
+// Since fast equals 1, return true.
+// For n = 2:
+
+// Initial number: slow = 2, fast = 2
+// Step 1: slow = 4, fast = 16
+// Step 2: slow = 16, fast = 37
+// Step 3: slow = 37, fast = 58
+// Step 4: slow = 58, fast = 145
+// Step 5: slow = 89, fast = 42
+// Step 6: slow = 145, fast = 20
+// Step 7: slow = 42, fast = 4
+// Step 8: slow = 20, fast = 16
+// Step 9: slow = 4, fast = 37
+// Step 10: slow = 16, fast = 89
+// Cycle detected (slow meets fast at 16), return false.
+
+
+// Conclusion
+// Both approaches are efficient for solving the Happy Number problem.
+// The HashSet approach is more straightforward and easier to understand,
+// while Floyd's Cycle Detection Algorithm is more space-efficient.
+// You can choose either based on your preference
+// for readability orspace optimization.
