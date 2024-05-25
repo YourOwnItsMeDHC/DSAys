@@ -1,6 +1,9 @@
 // Merge Sort Algorithm :
 // https://github.com/YourOwnItsMeDHC/DSA-Let-s-Fire-/blob/master/Recursion/Basics/src/com/company/f1MergeSort.java#L98
 
+// Visualization - of merge sort - recursive tree
+// https://opendsa-server.cs.vt.edu/embed/mergesortAV
+
 
 /**
  * Definition for singly-linked list.
@@ -13,6 +16,8 @@
  * }
  */
 
+
+// Approach - 01 : Iterative
 class Solution {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
         // dummy node which consists the merged list
@@ -37,6 +42,39 @@ class Solution {
         return dummy.next;
 
         // Here, we are skipping the dummy, because that is pointing to nothing
-        // Our merged list is startig from dummy.next, hence, we are returning it
+        // Our merged list is starting from dummy.next, hence, we are returning it
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+// Approach - 02 : Recursive
+// Must check 46
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        // Base case: If either list is empty, return the other one
+        if(list1 == null) return list2;
+        if(list2 == null) return list1;
+
+        // Choose the smaller head node and recursively merge its tail with the bigger list
+        if(list1.val <= list2.val) {
+            list1.next = mergeTwoLists(list1.next, list2);
+            return list1;
+        }
+        else {
+            list2.next = mergeTwoLists(list1, list2.next);
+            return list2;
+        }
+    }
+}
+
+
+
