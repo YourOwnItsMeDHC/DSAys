@@ -1,0 +1,221 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+// Approach 1: Two-Pointer (Tortoise and Hare) Method
+
+// Approach:
+
+// Use two pointers, slow and fast.
+// Move slow one step at a time and fast two steps at a time.
+// When fast reaches the end of the list, slow will be at the middle.
+
+// Time Complexity: O(n), where n is the length of the list.
+
+// Space Complexity: O(1), since we are using a constant amount of extra space.
+
+
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return slow;
+    }
+}
+
+// Dry Run:
+// Let's take a list: 1 -> 2 -> 3 -> 4 -> 5.
+
+// Initialization: slow = head, fast = head.
+// Step 1: slow at 1, fast at 1.
+// Step 2: Move slow to 2, fast to 3.
+// Step 3: Move slow to 3, fast to 5.
+// Step 4: fast reaches the end. slow is at 3, which is the middle node.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach 2: Counting Nodes
+// Approach:
+
+// Traverse the list to count the number of nodes.
+// Traverse the list again to reach the middle node.
+
+// Time Complexity: O(n).
+// Space Complexity: O(1).
+
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode curr = head;
+
+        int count = 0;
+        while(curr != null) {
+            count++;
+            curr = curr.next;
+        }
+
+        curr = head;
+        for(int i=0; i<count/2; i++) {
+            curr = curr.next;
+        }
+
+        return curr;
+    }
+}
+
+// Dry Run:
+// List: 1 -> 2 -> 3 -> 4 -> 5.
+
+// First Traversal: Count nodes: 5.
+// Second Traversal: Move to node 3 (5 / 2 = 2 steps from the start).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Not an efficient approach - 
+// Not getting submitted
+// Failed for most of the test cases
+
+// Approach 3: Using a Stack
+// Approach:
+
+// Push all nodes onto a stack.
+// Pop half the size of the stack.
+
+// Time Complexity: O(n).
+// Space Complexity: O(n), due to the stack.
+
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        Stack<ListNode> stack = new Stack<>();
+        
+        ListNode current = head;
+        while (current != null) {
+            stack.push(current);
+            current = current.next;
+        }
+        
+        int midIndex = stack.size() / 2;
+        
+        while (midIndex > 0) {
+            stack.pop();
+            midIndex--;
+        }
+        
+        return stack.peek();
+    }
+}
+
+// Dry Run:
+// List: 1 -> 2 -> 3 -> 4 -> 5.
+
+// Push to Stack: [1, 2, 3, 4, 5].
+// Pop Half: Pop 2 elements. Stack becomes [1, 2, 3]. Top of the stack is node 3.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach 4: Using an Array
+// Approach:
+
+// Store all nodes in an array.
+// Return the middle element.
+
+// Time Complexity: O(n).
+// Space Complexity: O(n), due to the array.
+
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        // I have used arraylist, because I don't know the size of the provided LL
+        List<ListNode> nums = new ArrayList<>();
+        ListNode curr = head;
+
+        while(curr != null) {
+            nums.add(curr);
+            curr = curr.next;
+        }
+
+        int midIndex = nums.size() / 2;
+
+        return nums.get(midIndex);
+    }
+}
+
+
+// I could use the array as well for the above approach
+
+// Constraints:
+// The number of nodes in the list is in the range [1, 100].
+// 1 <= Node.val <= 100
+
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        // Assuming the list size does not exceed 100
+        ListNode[] nums = new ListNode[100];
+        ListNode curr = head;
+
+        int index = 0;
+        while(curr != null) {
+            nums[index++] = curr;
+            curr = curr.next;
+        }
+        return nums[index / 2];
+    }
+}
+
+// Here I am returning "nums[index / 2]"
+// Because, the last node which is inserted in these array is till "indxe" only
+
+// Dry Run:
+// List: 1 -> 2 -> 3 -> 4 -> 5.
+
+// Store in Array: [1, 2, 3, 4, 5].
+// Middle Element: Index = 5 / 2 = 2. Array[2] is node 3.
