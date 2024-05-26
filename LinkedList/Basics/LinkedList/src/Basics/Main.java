@@ -127,5 +127,25 @@ public class Main {
 
         list4.insertRecur(79, 3);
         list4.display();               // 50->40->30->79->20->10->END
+
+
+
+        // 148. Sort List - Recursive bubble sort approach-2 (check other 3 approaches as well)
+        LL list5 = new LL();
+
+        list5.insertFirst(56);
+        list5.insertFirst(109);
+        list5.insertFirst(54);
+        list5.insertFirst(98);
+        list5.insertFirst(65);
+        System.out.println("Before applying Buuble Sort : ");
+        list5.display();               // 109->98->65->56->54->END
+
+        list5.sortList();
+
+
+        System.out.println("After applying Buuble Sort : ");
+        list5.display();               // 50->40->30->20->10->END
+
     }
 }

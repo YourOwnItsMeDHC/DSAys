@@ -179,4 +179,64 @@ public class LL {
         }
         System.out.println("END");
     }
+
+    public int sizeOfLL(Node head) {
+        Node temp = head;
+        int count = -0;
+        while(temp != null) {
+            count++;
+            temp = temp.next;
+        }
+        return count;
+    }
+
+
+    // 148. Sort List - Recursive bubble sort approach-2 (check other 3 approaches as well)
+    public void sortList() {
+        bubbleSort(size-1, 0);
+    }
+
+    public Node getNode(int index) {
+        Node temp = head;
+        for(int i=0; i<index; i++) {
+            temp = temp.next;
+        }
+        return temp;
+    }
+
+    public void bubbleSort(int iteration, int index) {
+        if(iteration == 0) {
+            return;
+        }
+        if(index < iteration) {
+            Node first = getNode(index);
+            Node second = getNode(index + 1);
+            Node prev = getNode(index - 1);
+
+            if(first.val < second.val) {
+                if(first == head) {
+                    head = second;
+                    first.next = second.next;
+                    second.next = first;
+                }
+                else if(second == tail) {
+                    prev.next = second;
+                    tail = first;
+                    first.next = null;
+                    second.next = tail;
+                }
+                else {
+                    prev.next = first.next;
+                    first.next = second.next;
+                    second.next = first;
+                }
+            }
+
+            bubbleSort(iteration, index+1);
+        }
+        else {
+            bubbleSort(iteration-1, 0);
+        }
+    }
+
 }
