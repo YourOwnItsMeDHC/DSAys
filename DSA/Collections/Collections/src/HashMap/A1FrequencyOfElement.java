@@ -84,3 +84,17 @@ public class A1FrequencyOfElement {
         }
     }
 }
+
+
+
+/*    OUTPUT :
+Approach - 01 : Naive Solution
+10 3
+20 4
+5 1
+
+Approach - 02 : Efficient Solution
+20 4
+5 1
+10 3
+ */
