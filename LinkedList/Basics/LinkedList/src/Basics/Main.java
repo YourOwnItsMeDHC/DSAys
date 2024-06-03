@@ -139,13 +139,19 @@ public class Main {
         list5.insertFirst(98);
         list5.insertFirst(65);
         System.out.println("Before applying Buuble Sort : ");
-        list5.display();               // 109->98->65->56->54->END
+        list5.display();               // 65->98->54->109->56->END
 
         list5.sortList();
 
 
         System.out.println("After applying Buuble Sort : ");
-        list5.display();               // 50->40->30->20->10->END
+        list5.display();               // 109->98->65->56->54->END
+
+        System.out.println("Reversing the Linked List : ");
+        list5.reverseRecursion(list5.getNode(0));            // Passing head node, which is at 0th index
+        list5.display();
+
+
 
     }
 }
