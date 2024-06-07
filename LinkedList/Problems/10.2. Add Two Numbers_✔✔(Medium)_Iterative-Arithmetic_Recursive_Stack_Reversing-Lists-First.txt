@@ -1,0 +1,442 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+
+// Approach 1 : Iterative Approach
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        // Create a dummy node to act as the head of the resulting linked list
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy; // Pointer to build the new linked list
+        int carry = 0; // Variable to store the carry-over value
+
+        // Loop through both linked lists until both are fully traversed
+        while (l1 != null || l2 != null) {
+            // Extract the current values from l1 and l2, or use 0 if the list has been fully traversed
+            int x = (l1 != null) ? l1.val : 0;
+            int y = (l2 != null) ? l2.val : 0;
+
+            // Calculate the sum of the current digits and the carry
+            int sum = carry + x + y;
+            carry = sum / 10; // Update the carry for the next iteration
+
+            // Create a new node for the current digit and link it to the result list
+            current.next = new ListNode(sum % 10);
+            current = current.next;
+
+            // Move to the next nodes in l1 and l2, if available
+            if (l1 != null) l1 = l1.next;
+            if (l2 != null) l2 = l2.next;
+        }
+
+        // If there is a carry left after the final addition, create a new node for it
+        if (carry > 0) {
+            current.next = new ListNode(carry);
+        }
+
+        // Return the next node of the dummy node, as it is the head of the resulting linked list
+        return dummy.next;
+    }
+}
+
+
+// Dry Run :
+
+// l1: 2 -> 4 -> 3
+// l2: 5 -> 6 -> 4
+// The goal is to add these two numbers and return the result as a linked list.
+
+// Dry Run
+// Initialization:
+
+// dummy = ListNode(0)
+// current = dummy
+// carry = 0
+
+// Iteration 1:
+// l1 = 2 -> 4 -> 3
+// l2 = 5 -> 6 -> 4
+
+// Extract values:
+// x = 2 (l1.val)
+// y = 5 (l2.val)
+
+// Calculate sum:
+// sum = carry + x + y = 0 + 2 + 5 = 7
+// carry = sum / 10 = 7 / 10 = 0
+
+// Create new node:
+// current.next = ListNode(sum % 10) = ListNode(7)
+// current = current.next
+
+// Move to next nodes:
+// l1 = 4 -> 3
+// l2 = 6 -> 4
+
+// State:
+// Resulting linked list: dummy -> 7
+// Carry: 0
+
+
+
+
+
+// Iteration 2:
+// l1 = 4 -> 3
+// l2 = 6 -> 4
+
+// Extract values:
+// x = 4 (l1.val)
+// y = 6 (l2.val)
+
+// Calculate sum:
+// sum = carry + x + y = 0 + 4 + 6 = 10
+// carry = sum / 10 = 10 / 10 = 1
+
+// Create new node:
+// current.next = ListNode(sum % 10) = ListNode(0)
+// current = current.next
+
+// Move to next nodes:
+// l1 = 3
+// l2 = 4
+
+// State:
+// Resulting linked list: dummy -> 7 -> 0
+// Carry: 1
+
+
+
+
+
+// Iteration 3:
+// l1 = 3
+// l2 = 4
+
+// Extract values:
+// x = 3 (l1.val)
+// y = 4 (l2.val)
+
+// Calculate sum:
+// sum = carry + x + y = 1 + 3 + 4 = 8
+// carry = sum / 10 = 8 / 10 = 0
+
+// Create new node:
+// current.next = ListNode(sum % 10) = ListNode(8)
+// current = current.next
+
+// Move to next nodes:
+// l1 = null
+// l2 = null
+
+// State:
+// Resulting linked list: dummy -> 7 -> 0 -> 8
+// Carry: 0
+
+
+
+
+
+// Post-loop Check
+// carry = 0
+// No additional node needed for carry.
+
+// Final State
+// Resulting linked list: 7 -> 0 -> 8
+// Thus, the sum of 342 and 465 is 807, represented by the linked list 7 -> 0 -> 8.
+
+
+
+
+
+
+
+
+
+
+// Time Complexity
+// The time complexity of the addTwoNumbers function is 𝑂(max(𝑚,𝑛))
+// O(max(m,n)), where 𝑚 is the number of nodes in the first linked list (l1)
+// and 𝑛is the number of nodes in the second linked list (l2).
+// This is because we traverse each list once.
+
+// Space Complexity
+// The space complexity of the addTwoNumbers function is 𝑂(max(𝑚,𝑛)).
+// This is because the resulting linked list could have up to max(𝑚,𝑛)+1 nodes,
+// where the extra node is needed to handle any final carry-over.
+// The space used by the linked list is the dominating factor, as we only use a
+// constant amount of additional space for variables (carry, current, dummy, and a few others).
+
+// Detailed Analysis
+// Time Complexity
+// Traversal of Linked Lists: The function iterates through both linked lists in a single while loop. Each iteration processes one node from l1 and one node from l2. Thus, the time complexity is proportional to the number of nodes in the longer linked list, i.e., 
+// 𝑂(max(𝑚,𝑛))
+// Space Complexity
+// Resulting Linked List: In the worst-case scenario, the resulting linked list could have one more node than the longer of the two input lists (due to a carry at the end). Therefore, the space required for the resulting linked list is 
+// 𝑂(max(𝑚,𝑛)+1)
+// Auxiliary Space: The auxiliary space used by the function (excluding the output
+// space) is constant, 𝑂(1)
+// This includes variables like carry, current, and the new nodes being created.
+// Overall, the space complexity is dominated by the space required for the
+// output linked list, leading to an overall space complexity of O(max(m,n)).
+
+// Summary
+
+// Time Complexity:  O(max(m,n))
+// Space Complexity: O(max(m,n))
+
+// These complexities ensure that the function efficiently handles the addition
+// of two numbers represented as linked lists, even when the numbers are of
+// different lengths.
+
+
+
+
+
+
+
+
+
+
+// In traditional arithmetic, we add numbers from right to left, starting with
+// the least significant digit (units place) and moving to the most significant
+// digit. However, the linked list representation of numbers in this problem
+// actually aligns with this approach because each node represents a digit of the
+// number, with the head of the list being the least significant digit and the
+// tail being the most significant digit.
+
+// Here's a step-by-step explanation to clarify how the provided iterative approach is correct and aligns with the usual method of adding numbers from right to left:
+
+// Explanation with Example
+// Consider the numbers 342 and 465, represented as linked lists:
+
+// 342: 2 -> 4 -> 3
+// 465: 5 -> 6 -> 4
+
+// When we add these numbers:
+// From the rightmost (least significant) digits:
+
+// Add 2 and 5 to get 7.
+// Add 4 and 6 to get 10 (write down 0 and carry over 1).
+// Add 3 and 4 plus the carry 1 to get 8.
+// The result is 807.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach - 02 : Recursive Approach
+// A recursive approach involves a similar logic but uses recursion to handle
+// the traversal and addition of digits
+
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        return addTwoNumbers(l1, l2, 0);
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2, int carry) {
+        if(l1 == null && l2 == null && carry == 0) {
+            return null;
+        }
+
+        int sum = carry;
+
+        if(l1 != null) {
+            sum += l1.val;
+            l1 = l1.next;
+        }
+        if(l2 != null) {
+            sum += l2.val;
+            l2 = l2.next;
+        }
+
+        ListNode node = new ListNode(sum % 10);
+        node.next = addTwoNumbers(l1, l2, sum/10);
+        return node;
+    }
+}
+
+
+// Time Complexity: O(max(m,n))
+// Space Complexity: O(max(m,n)) (due to recursion stack)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Code and approach is correct but giving wrong answer
+// Approach - 03. Reversing the Lists First  
+
+// This approach involves reversing both linked lists, performing the addition,
+// and then reversing the result to maintain the original order.
+
+// Steps:
+
+// Reverse both linked lists.
+// Add the numbers using the iterative approach.
+// Reverse the resulting linked list.
+
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        l1 = reverseList(l1);
+        l2 = reverseList(l2);
+        ListNode result = addReversedList(l1, l2);
+        return reverseList(result);
+    }
+
+    public ListNode reverseList(ListNode curr) {
+        ListNode prev = null;
+        while(curr != null) {
+            ListNode nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+        return prev;
+    }
+
+    public ListNode addReversedList(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode();
+        ListNode current = dummy;
+        int carry = 0;
+
+        while(l1 != null || l2 != null || carry != 0) {
+            int sum = carry;
+
+            if(l1 != null) {
+                sum += l1.val;
+                l1 = l1.next;
+            }
+            if(l2 != null) {
+                sum += l2.val;
+                l2 = l2.next;
+            }
+
+            carry = sum / 10;
+            current.next = new ListNode(sum%10);
+            current = current.next;
+        }
+        return dummy.next;
+    }
+}
+
+
+// Time Complexity: O(m+n)
+// Space Complexity: O(max(m,n))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach - 04 : Using Stacks
+// This approach uses stacks to handle the addition without modifying the
+// original lists or using recursion.
+
+// Steps:
+
+// Push all nodes' values from both linked lists onto two separate stacks.
+// Pop values from both stacks, add them, and manage carry.
+// Build the result list from the least significant digit to
+// the most significantdigit.
+
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        Stack<ListNode> stack1 = new Stack<>();
+        Stack<ListNode> stack2 = new Stack<>();
+
+        while(l1 != null) {
+            stack1.push(l1);
+            l1 = l1.next;
+        }
+        while(l2 != null) {
+            stack2.push(l2);
+            l2 = l2.next;
+        }
+
+        ListNode result = null;
+        int carry = 0;
+        while(!stack1.isEmpty() || !stack2.isEmpty() || carry > 0) {
+            int sum = carry;
+            if(!stack1.isEmpty()) sum += stack1.pop();
+            if(!stack2.isEmpty()) sum += stack2.pop();
+
+            carry = sum / 10;
+
+            ListNode node = new ListNode(sum % 10);
+            node.next = result;
+            result = node; 
+        }
+
+        return result;
+    }
+}
+
+
+
+// Time Complexity: O(m+n)
+// Space Complexity: O(m+n)
+
+
+
+// Summary
+// Each approach has its advantages and disadvantages:
+
+// Iterative Approach:
+// Simple and easy to understand.
+// Optimal in terms of both time and space complexity.
+
+// Recursive Approach:
+// Elegant and clean.
+// May lead to stack overflow for very large lists due to recursion depth.
+
+// Reversing the Lists:
+// Does not use extra space proportional to input size except for the result.
+// Requires additional operations for reversing the lists twice.
+
+// Using Stacks:
+// Does not modify the original lists.
+// Uses additional space for the stacks.
+// Useful when you need to keep the original list structure intact.
+
+// Choose the approach based on the specific constraints and
+// requirements ofyour problem context.
