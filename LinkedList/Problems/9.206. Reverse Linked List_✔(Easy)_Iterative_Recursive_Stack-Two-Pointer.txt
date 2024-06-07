@@ -220,3 +220,162 @@ class Solution {
 // 1.next = null
 
 // Output List: 5 -> 4 -> 3 -> 2 -> 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Aproach - 03 : Stack
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if(head == null || head.next == null) {
+            return head;
+        }
+
+        Stack<ListNode> stack = new Stack<>();
+        ListNode curr = head;
+
+        while(curr != null) {
+            stack.push(curr);
+            curr = curr.next;
+        }
+
+        ListNode newHead = stack.pop();
+        ListNode node = newHead;
+
+        while(!stack.isEmpty()) {
+            node.next = stack.pop();
+            node = node.next; 
+        }
+
+        node.next = null; // the last node should point to null
+
+        return newHead;
+    }
+}
+
+// Explanation:
+// In this approach, we use a stack to reverse the linked list. We first push
+// all nodes onto the stack and then pop them to build the reversed list.
+
+// Steps:
+
+// Initialize an empty stack.
+// Traverse the list and push each node onto the stack.
+// Pop nodes from the stack and rebuild the list in reverse order.
+// Dry Run:
+
+// Input List: 1 -> 2 -> 3 -> 4 -> 5
+// Stack after pushing all nodes: [1, 2, 3, 4, 5]
+// Popping nodes and rebuilding list:
+// Pop 5, new head = 5
+// Pop 4, 5.next = 4
+// Pop 3, 4.next = 3
+// Pop 2, 3.next = 2
+// Pop 1, 2.next = 1
+// 1.next = null
+// Output List: 5 -> 4 -> 3 -> 2 -> 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Aproach - 04 : Two Pointers
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if(head == null || head.next == null) {
+            return head;
+        }
+
+        // Step 1: Find the length of the list
+        int length = 0;
+        ListNode curr = head;
+
+        while(curr != null) {
+            length++;
+            curr = curr.next;
+        }
+
+        ListNode start = head;
+        ListNode end = head;
+
+        // length = 5 ,
+        // till < length - 1     i.e        < 4        i.e.           <= 3
+        //   10 -> 20 -> 30 -> 40 -> 50 -> null
+        //   e
+
+        // 0 10 -> 20 -> 30 -> 40 -> 50 -> null
+        //          e
+
+        // 1 10 -> 20 -> 30 -> 40 -> 50 -> null
+        //                e
+
+        // 2 10 -> 20 -> 30 -> 40 -> 50 -> null
+        //                      e
+
+        // 3 10 -> 20 -> 30 -> 40 -> 50 -> null
+        //                            e
+
+        for(int i=0; i<length-1; i++) {
+            end = end.next;
+        }
+
+        // Step 2: Use two pointers to swap values
+        for(int i=0; i<length/2; i++) {
+            // Swap values
+            int temp = start.val;
+            start.val = end.val;
+            end.val = temp;
+
+            // Move start forward and end backward
+            start = start.next;
+            end = head;
+
+            for(int j=0; j<length-i-2; j++) {
+                end = end.next;
+            }
+        }
+
+        return head;
+    }
+}
+
+
+// Explanation:
+// This approach involves swapping values of nodes using two pointers moving
+// from the start and end towards the middle. This approach only works if you
+// have access to the length of the list and can use two pointers.
+
+// Steps:
+
+// Determine the length of the list.
+// Use two pointers: one starting from the head and another from the end.
+// Swap the values of nodes pointed by the two pointers until they meet in the middle.
+// Dry Run:
+
+// Input List: 1 -> 2 -> 3 -> 4 -> 5
+// Length of list: 5
+// Two pointers:
+// Start = 1, End = 5, Swap values (1, 5): 5 -> 2 -> 3 -> 4 -> 1
+// Start = 2, End = 4, Swap values (2, 4): 5 -> 4 -> 3 -> 2 -> 1
+// Start = 3, End = 3 (middle reached, stop)
+// Output List: 5 -> 4 -> 3 -> 2 -> 1
