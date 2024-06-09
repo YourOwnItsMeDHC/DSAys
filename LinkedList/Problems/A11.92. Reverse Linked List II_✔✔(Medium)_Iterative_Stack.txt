@@ -1,0 +1,112 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+//  https://youtu.be/bRZ_Fy4zRRY?feature=shared
+
+//  Must Check - 50
+// Approach - 01 : Iterative Approach
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        // Check for the base cases where the list is either empty or has only one node.
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        // Create a dummy node and point its next to the head of the list.
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        // Initialize prev to the dummy node.
+        ListNode prev = dummy;
+
+        // Move prev to the node just before the 'left' position.
+        // This loop runs (left - 1) times to place prev at (left - 1)-th node.
+        for (int i = 1; i < left; i++) {
+            prev = prev.next;
+        }
+
+        // curr is the first node in the sublist to be reversed (left-th node).
+        ListNode curr = prev.next;
+
+        // Reverse the sublist from position 'left' to 'right'.
+        // This loop runs (right - left) times to reverse the sublist.
+        for(int i=1; i<=right-left; i++) {
+            ListNode tempCurr = prev.next;
+            prev.next = curr.next;
+            curr.next = curr.next.next;
+            prev.next.next = tempCurr;
+        }
+
+        return dummy.next;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach - 02 : Using a Stack
+// Another approach is to use a stack to reverse the sublist.
+// This is less optimal in terms of space but easier to understand.
+
+// Steps
+// Traverse the list and push nodes from m to n onto a stack.
+// Pop nodes from the stack and reattach them back to the list.
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if(head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode prev = dummy;
+        for(int i=1; i<=left-1; i++) {
+            prev = prev.next;
+        }
+
+        ListNode start = prev.next;
+        Stack<ListNode> stack = new Stack<>();
+        for(int i=1; i<=right-left+1; i++) {
+            stack.push(start);
+            start = start.next;
+        }
+
+        while(!stack.isEmpty()) {
+            prev.next = stack.pop();
+            prev = prev.next;
+        }
+        prev.next = start;
+
+        return dummy.next;
+    }
+}
+
+
+
+// Approach	    Time Complexity	  Space Complexity	       Notes
+// Iterative	    O(n)	           O(1)	         Most efficient in terms of
+//                                                   space and time
+// Using a Stack    O(n)	           O(n)	         Easy to understand but not
+//                                                   space efficient
