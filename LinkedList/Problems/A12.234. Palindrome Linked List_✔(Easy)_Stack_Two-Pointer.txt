@@ -1,0 +1,171 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+//  Approach 1: Using a Stack
+// Explanation:
+
+// Traverse the linked list and push each node's value onto a stack.
+// Traverse the linked list again and for each node, pop a value from the stack
+// and compare it with the current node's value.
+// If all values match, the list is a palindrome.
+// Complexity:
+
+// Time: O(n) ,  where 𝑛 is the number of nodes in the linked list.
+// Space: O(n) , due to the stack usage.
+
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        Stack<Integer> st = new Stack<>();
+        ListNode curr = head;
+
+        // Push all elements of the list onto the stack
+        while(curr != null) {
+            st.push(curr.val);
+            curr = curr.next;
+        }
+
+        // Traverse the list again and compare with the stack
+        curr = head;
+        while(curr != null) {
+            if(curr.val != st.pop()) {
+                return false;
+            }
+            curr = curr.next;
+        }
+
+        return true;
+  }
+}
+
+// Dry Run Example:
+
+// List: 1 -> 2 -> 2 -> 1
+// Stack after first traversal: [1, 2, 2, 1]
+// Comparison:
+// 1 == 1 (pop stack)
+// 2 == 2 (pop stack)
+// 2 == 2 (pop stack)
+// 1 == 1 (pop stack)
+// Result: Palindrome
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach 2: Reverse Second Half
+// Explanation:
+
+// Use two pointers (fast and slow) to find the middle of the list.
+// Reverse the second half of the list.
+// Compare the first half with the reversed second half.
+// Restore the list (optional).
+
+// Complexity:
+
+// Time: O(n)
+// Space: O(1) since no extra space is used apart from pointers.
+
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if(head == null || head.next == null) return true;
+
+        ListNode slow = head, fast = head;
+
+        // Step 1: Find the middle of the linked list
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Step 2: Reverse the second half of the list
+        // Reverse the sublist i.e. from middle till the end
+        ListNode curr = slow;
+        ListNode prev = null;
+        while(curr != null) {
+            ListNode nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+
+        // Step 3: Compare the first half and the reversed second half
+        ListNode firstHalf = head, secondHalf = prev;
+        while(secondHalf != null) {
+            if(firstHalf.val != secondHalf.val) {
+                return false;
+            }
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+
+        return true;
+    }
+}
+
+// Dry Run Steps
+// Step - 01 :  Finding the Middle of the Linked List:
+
+// We use two pointers, slow and fast. slow moves one step at a time,
+// while fast moves two steps at a time.
+
+// Initial: slow = 1, fast = 1
+// Step 1: slow = 2, fast = 3
+// Step 2: slow = 3, fast = 3 (last 3)
+// Step 3: slow = 4, fast = 1 (end)
+
+// Now, slow is at the middle node (value 4).
+
+
+// Step - 02 : Reversing the Second Half of the List:
+// We reverse the list starting from the slow pointer.
+
+// Initial: prev = null, curr = 4
+// Step 1: curr = 4, temp = 3 (next node)
+//          4 -> null, prev = 4, curr = 3
+// Step 2: curr = 3, temp = 2
+//          3 -> 4, prev = 3, curr = 2
+// Step 3: curr = 2, temp = 1
+//          2 -> 3, prev = 2, curr = 1
+// Step 4: curr = 1, temp = null
+//          1 -> 2, prev = 1, curr = null
+
+// Now the second half of the list is reversed and
+// prev points to the head of the reversed part: 1 -> 2 -> 3 -> 4.
+
+
+// Step - 03 : Comparing the Two Halves:
+// We compare the first half (starting from head) and 
+// the reversed second half (starting from prev).
+
+// Initial: firstHalf = 1, secondHalf = 1
+// Step 1: Compare 1 and 1 -> Match
+//          firstHalf = 2, secondHalf = 2
+// Step 2: Compare 2 and 2 -> Match
+//          firstHalf = 3, secondHalf = 3
+// Step 3: Compare 3 and 3 -> Match
+//          firstHalf = 4, secondHalf = 4
+
+// All elements match, indicating the list is a palindrome.
+
+
