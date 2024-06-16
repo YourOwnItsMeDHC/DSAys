@@ -1,0 +1,163 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+// Problem Statement
+// Given a singly linked list L: L0 → L1 → … → Ln-1 → Ln,
+// reorder it to: L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → ...
+
+// Approach - 01 : Reverse the Second Half and Merge
+
+// Intuition
+// Find the middle of the linked list.
+// Reverse the second half of the list.
+// Merge the two halves.
+
+// Steps
+// Use the slow and fast pointers to find the middle of the list.
+// Reverse the second half of the list.
+// Merge the two halves by alternating nodes.
+
+class Solution {
+    public void reorderList(ListNode head) {
+        if(head == null || head.next == null) return;
+
+        // Step 1: Find the middle of the linked list
+        ListNode mid = middle(head);
+        // Step 2: Reverse the second half of the linked list
+        ListNode headSecond = reverse(mid);
+        // Step 3: Initialize pointers to the start of the first half and second half
+        ListNode headFirst = head;
+
+        // Step 4: Merge the two halves alternately
+        while (headFirst != null && headSecond != null) {
+            // Store the next nodes temporarily
+            ListNode nextTempFirst = headFirst.next;
+            ListNode nextTempSecond = headSecond.next;
+
+            // Change the next pointers to interleave the nodes
+            headFirst.next = headSecond;
+            headFirst = nextTempFirst;
+
+            headSecond.next = headFirst;
+            headSecond = nextTempSecond;
+        }
+
+        // If there are remaining nodes in the first half, terminate the list
+        if (headFirst != null) {
+            headFirst.next = null;
+        }
+    }
+
+    public ListNode middle(ListNode head) {
+        ListNode slow = head, fast = head;
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    public ListNode reverse(ListNode head) {
+        ListNode curr = head;
+        ListNode prev = null;
+        while(curr != null) {
+            ListNode nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+        return prev;
+    }
+}
+
+// Dry Run
+// Example: 1 -> 2 -> 3 -> 4
+
+// Find middle: slow at 3, fast at null
+// Reverse second half: 4 -> 3 -> null
+// Merge:
+// 1 -> 4
+// 4 -> 2
+// 2 -> 3
+// 3 -> null
+
+// Complexity
+// Time Complexity: O(N) for finding the middle, reversing, and merging.
+// Space Complexity: O(1) since no extra space is used apart from variables.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach - 02 : Using a List to Store Nodes
+
+// Intuition
+// Traverse the linked list and store all nodes in a list.
+// Use two pointers from both ends of the list to reorder the nodes.
+
+// Steps
+// Traverse the linked list and store each node in an ArrayList.
+// Use two pointers, one starting from the beginning and
+// the other from the end of the list.
+// Reorder the nodes by rearranging the next pointers.
+
+class Solution {
+    public void reorderList(ListNode head) {
+        if(head == null || head.next == null) return;
+
+        // Store the nodes in an array list
+        List<ListNode> nodes = new ArrayList<>();
+        ListNode curr = head;
+        while(curr != null) {
+            nodes.add(curr);
+            curr = curr.next;
+        }
+
+        int i = 0, j = nodes.size()-1;
+        while(i < j) {
+            nodes.get(i).next = nodes.get(j);
+            i++;
+
+            // If i and j meet, it means we have reordered up to the middle of the list
+            if(i == j) break;                // Optional - me
+            nodes.get(j).next = nodes.get(i);
+            j--;
+        }
+        nodes.get(i).next = null;
+    }
+}
+
+// Dry Run
+// Example: 1 -> 2 -> 3 -> 4
+
+// Store nodes: [1, 2, 3, 4]
+// Reorder:
+// 1 -> 4
+// 4 -> 2
+// 2 -> 3
+// 3 -> null
+
+// Complexity
+// Time Complexity: O(N) to traverse and store the nodes.
+// Space Complexity: O(N) to store the nodes in the list.
