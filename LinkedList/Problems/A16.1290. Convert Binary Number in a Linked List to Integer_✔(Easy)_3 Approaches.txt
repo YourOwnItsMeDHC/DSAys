@@ -1,0 +1,267 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+// Traditional Brute Force Approach
+class Solution {
+    public int getDecimalValue(ListNode head) {
+        // Step 1: Reverse the linked list
+        ListNode curr = head;
+        ListNode prev = null;
+        while (curr != null) {
+            ListNode nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+
+        // Step 2: Calculate the decimal value
+        int addOn = 1;
+        int ans = 0;
+        while (prev != null) {
+            int val = prev.val;
+            if (val == 1) {
+                ans += addOn;
+            }
+            addOn *= 2;
+            prev = prev.next;
+        }
+
+        return ans;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  Same as above, but the better one
+class Solution {
+    public int getDecimalValue(ListNode head) {
+        ListNode revHead = revList(head);
+        ListNode node = revHead;
+        int base = 1;
+        int n = 0;
+        
+        while(node!=null){
+            int a = node.val;
+            n = n + a*base;
+            base = base*2;
+            node=node.next;
+        }
+
+        return n;
+    }
+
+    ListNode revList(ListNode head){
+        ListNode prev = null;
+        ListNode curr = head;
+        ListNode next = curr.next;
+
+        while(curr!=null){
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+            if(next!=null){
+                next=next.next;
+            }
+        }
+        return prev;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Optimized Approach:
+
+// To optimize, we can traverse the linked list only once, keeping track of
+// the current decimal value as we progress.
+
+// Iterative Calculation: Traverse the linked list iteratively.
+// Decimal Calculation: At each step, multiply the current result by 2
+// (equivalent to left shifting one bit) and add the value of the current node.
+// Return Result: Return the final result.
+
+// Dry Run:
+// Let's dry run this approach on an example linked list 1 -> 0 -> 1:
+
+// Initially, result = 0
+// First node: result = (0 * 2) + 1 = 1
+// Second node: result = (1 * 2) + 0 = 2
+// Third node: result = (2 * 2) + 1 = 5
+// Return result = 5
+
+// Complexity:
+// Time: O(n), where n is the number of nodes in the linked list.
+// Space: O(1), as we only use a constant amount of extra space for variables.
+
+class Solution {
+    public int getDecimalValue(ListNode head) {
+        int result = 0;
+        ListNode curr = head;
+
+        while(curr != null) {
+            result = (result << 1) + curr.val;
+            curr = curr.next;
+        }
+
+        return result;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Brute Force Approach:
+
+// Traverse and Build: Traverse the linked list from head to tail,
+// constructing the binary string.
+// Convert to Integer: Convert the binary string to an integer
+// using built-in functions or manual conversion.
+
+// Complexity:
+// Time: O(n), where n is the number of nodes in the linked list.
+// Space: O(n) for storing the binary string.
+
+class Solution {
+    public int getDecimalValue(ListNode head) {
+        StringBuilder binaryStringBuilder = new StringBuilder();
+        ListNode current = head;
+        
+        // Traverse the linked list and build the binary string
+        while (current != null) {
+            binaryStringBuilder.append(current.val);
+            current = current.next;
+        }
+        
+        // Convert the binary string to an integer
+        int result = Integer.parseInt(binaryStringBuilder.toString(), 2);
+        
+        return result;
+    }
+}
+
+// In the Integer.parseInt() method in Java, the second parameter represents
+// the radix, which specifies the base of the number system.
+
+// In this case, , 2 specifies that the binary string should be interpreted as a
+//  base-2 (binary) number. By providing 2 as the radix, the method knows that
+// the input string represents a binary number, and it converts it into an
+// integer accordingly.
+
+// So Integer.parseInt(binaryStringBuilder.toString(), 2) parses the binary
+// string representation of the number and converts it into an integer.
+
+
+
+
+
+// Let's dry run the brute force approach on an example linked list 1 -> 0 -> 1:
+
+// Traverse and Build Binary String:
+
+// Initialize an empty StringBuilder binaryStringBuilder.
+// Start traversing the linked list from the head.
+// At each node, append the value of the node to the StringBuilder.
+// After traversal, the StringBuilder will contain the binary string
+// representation of the number.
+
+// Dry Run:
+
+// Current node: 1
+// Append 1 to the StringBuilder.
+// Next node: 0
+// Append 0 to the StringBuilder.
+// Next node: 1
+// Append 1 to the StringBuilder.
+// End of traversal.
+// After traversal, binaryStringBuilder will contain "101".
+
+// Convert Binary String to Integer:
+
+// Use Integer.parseInt() method to parse the binary string to an integer.
+// Provide "101" as the binary string and 2 as the radix (since it's binary).
+// Dry Run:
+
+// Integer.parseInt("101", 2) parses the binary string "101" and converts it
+// into an integer.
+// The result of Integer.parseInt("101", 2) is 5.
+
+// Return Result:
+
+// Return the parsed integer as the result.
+// Final Output: The decimal representation of the binary linked list
+// 1 -> 0 -> 1 is 5.
