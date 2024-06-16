@@ -1,0 +1,288 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+// Approach - 01 : Brute Force (Two Passes)
+// The brute force approach involves two passes through the list:
+
+// First Pass: Calculate the length of the linked list.
+// Second Pass: Traverse to the middle node and delete it.
+
+// Steps:
+// Traverse the linked list to count the total number of nodes.
+// Calculate the middle node index: middle = length / 2.
+// Traverse again to the node just before the middle node.
+// Delete the middle node by updating the next pointer.
+
+class Solution {
+    public ListNode deleteMiddle(ListNode head) {
+        if (head == null || head.next == null) {
+            return null;
+        }
+
+        // Step 1: Calculate the length of the linked list
+        int length = 0;
+        ListNode curr = head;
+        while(curr != null) {
+            length++;
+            curr = curr.next;
+        }
+
+        // Step 2: Find the middle index
+        int middleIndex = length / 2;
+
+        // Step 3: Traverse to the node before the middle node
+        curr = head;
+        for(int i=0; i<middleIndex-1; i++) {
+            curr = curr.next;
+        }
+
+        // Step 4: Delete the middle node
+        curr.next = curr.next.next;
+
+        return head;
+    }
+}
+
+// Dry Run:
+// Example: 1 -> 2 -> 3 -> 4 -> 5
+
+// First pass: Count nodes (length = 5).
+// Calculate middle index: 5 / 2 = 2 (0-based index, so node with value 3 is the middle).
+// Second pass: Traverse to node with value 2.
+// Delete the node with value 3: 1 -> 2 -> 4 -> 5.
+
+// Complexity:
+// Time Complexity: O(n) for two passes through the list.
+// Space Complexity: O(1) for constant space usage.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach - 02 : Optimized Approach (Two-Pointer Technique).
+
+// This approach uses two pointers (slow and fast)
+// to find the middle nodein one pass.
+
+// Steps:
+// Initialize two pointers, slow and fast, both pointing to the head.
+// Move fast pointer two steps and slow pointer one step until fast reaches the end of the list.
+// Keep track of the node before slow using a prev pointer.
+// Delete the middle node by updating the prev.next pointer.
+
+class Solution {
+    public ListNode deleteMiddle(ListNode head) {
+        // Handle edge cases where the list is empty or has only one node
+        if(head == null || head.next == null) return null;
+
+        // Initialize two pointers: slow and fast
+        ListNode slow = head, fast = head;
+
+        // To keep track of the node before slow 
+        ListNode prev = null;
+        
+        while(fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Delete the middle node
+        prev.next = slow.next;
+
+        return head;
+    }
+}
+
+// Dry Run:
+// Example: 1 -> 2 -> 3 -> 4 -> 5
+
+// Initial: slow at 1, fast at 1, prev is null.
+// First iteration: slow at 2, fast at 3, prev at 1.
+// Second iteration: slow at 3, fast at 5, prev at 2.
+// fast reaches the end: slow at middle node 3, prev at 2.
+// Delete 3: 1 -> 2 -> 4 -> 5.
+
+// Complexity:
+// Time Complexity: O(n) for a single pass through the list.
+// Space Complexity: O(1) for constant space usage.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach - 03 : Recursive Approach
+// Using recursion, we can traverse the list and find the middle node
+// while unwinding the recursion.
+
+// Steps:
+// Use a helper function that returns a pair of (node, index).
+// Traverse the list recursively to find the length and delete the middle node.
+// Use the index to identify the middle node.
+
+class Solution {
+    public ListNode deleteMiddle(ListNode head) {
+        if (head == null || head.next == null) return null;
+        return deleteMiddleRec(head, length(head) / 2);
+    }
+
+    private int length(ListNode head) {
+        int length = 0;
+        ListNode current = head;
+        while (current != null) {
+            length++;
+            current = current.next;
+        }
+        return length;
+    }
+
+    private ListNode deleteMiddleRec(ListNode head, int middleIndex) {
+        if(middleIndex == 1) {
+            head.next = head.next.next;
+            return head;
+        }
+
+        head.next = deleteMiddleRec(head.next, middleIndex - 1);
+        return head;
+    }
+}
+
+
+// Dry Run:
+// Example: 1 -> 2 -> 3 -> 4 -> 5
+
+// Calculate length: 5.
+// Recursive call with middle index: 2.
+// Unwind recursion to delete middle node at index 2.
+// Delete 3: 1 -> 2 -> 4 -> 5.
+
+// Complexity:
+// Time Complexity: O(n) for traversal and deletion.
+// Space Complexity: O(n) due to recursion stack.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach 4: Simulated Recursion with Stack - Not accpeted for some testcases
+// This approach uses an explicit stack to simulate the recursion process,
+// allowing iterative handling.
+
+// Steps:
+// Traverse the list and push nodes onto the stack.
+// Pop nodes from the stack until the middle node is reached.
+// Update pointers to delete the middle node.
+
+class Solution {
+    public ListNode deleteMiddle(ListNode head) {
+        if (head == null || head.next == null) return null;
+
+        Stack<ListNode> stack = new Stack<>();
+        ListNode current = head;
+        while (current != null) {
+            stack.push(current);
+            current = current.next;
+        }
+
+        // Calculate the middle index
+        int middleIndex = stack.size() / 2;
+
+        // Pop nodes from the stack until we reach the middle node
+        ListNode prev = null;
+        for(int i=0; i<=middleIndex; i++) {
+            prev = stack.pop();
+        }
+
+        // Delete the middle node by updating the next pointer of the previous node
+        prev.next = prev.next.next;
+
+        // Return the head of the modified list
+        return head;
+    }
+}
+
+// Dry Run:
+// Example: 1 -> 2 -> 3 -> 4 -> 5
+
+// Push nodes onto stack: [1, 2, 3, 4, 5].
+// Calculate middle index: 2.
+// Pop nodes until middle node: [1, 2].
+// Delete 3: 1 -> 2 -> 4 -> 5.
+
+// Complexity:
+// Time Complexity: O(n) for traversal and deletion.
+// Space Complexity: O(n) for stack storage.
+
+
+
+
+
+
+
+// Conclusion
+// Brute Force: Simple but requires two passes (O(n) time, O(1) space).
+// Two-Pointer Technique: Efficient with one pass (O(n) time, O(1) space).
+// Recursive: Elegant but can cause stack overflow (O(n) time, O(n) space).
+// Simulated Recursion with Stack: Iterative but
+// uses additional space (O(n) time, O(n) space).
+
+
+// The Two-Pointer Technique is the most optimized and preferred approach
+// due to its linear time complexity and constant space usage.
