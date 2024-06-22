@@ -1,0 +1,45 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+//  Two Pointer Approach :
+class Solution {
+    public ListNode swapNodes(ListNode head, int k) {
+        ListNode first = head;
+        ListNode second = head;
+        ListNode finder = head;
+
+        // Move `first` to the k-th node from the beginning
+        for(int i=1; i<k; i++) {
+            first = first.next;
+        }
+
+        // Initialize `finder` to find the k-th node from the end
+        finder = first;
+
+        // Move `finder` to the end while
+        // moving `second` to the k-th node from the end
+        // Here, "second" is tarting from head, and "finder" is tarting from kth node
+        // So, when "finder" will reach the last node, still "second" node will be
+        // K step behind the "finder"
+        // Because, form the starting itself, "second" is behind "finder" by K steps
+        while(finder.next != null) {
+            finder = finder.next;
+            second = second.next;
+        }
+
+        // Swap the values of `first` and `second`
+        int temp = first.val;
+        first.val = second.val;
+        second.val = temp;
+
+        return head;
+    }
+}
