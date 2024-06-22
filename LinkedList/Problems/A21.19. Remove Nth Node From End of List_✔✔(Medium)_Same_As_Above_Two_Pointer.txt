@@ -1,0 +1,186 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+//   Similar like 1721. Swapping Nodes in a Linked List
+
+// Optimal Approach (One-Pass Traversal Using Two Pointers)
+
+// Algorithm :
+// Use two pointers, fast and slow.
+// Move fast pointer n steps ahead.
+// Move both pointers one step at a time until fast reaches the end.
+// The slow pointer will be at the node just before the target node.
+// Adjust pointers to remove the target node.
+
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        // Create a dummy node that points to the head of the list
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode fast = dummy;
+        ListNode slow = dummy;
+
+        // Move fast n+1 steps ahead, so there's a gap of n between fast and slow
+        for(int i=0; i<=n; i++) {
+            fast = fast.next;
+        }
+
+        // Move both pointers until fast reaches the end
+        while(fast != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        
+        // Skip the target node
+        slow.next = slow.next.next;
+
+        // Return the head of the modified list
+        return dummy.next;
+    }
+}
+
+
+// Dry Run Example for Optimal Approach
+// For the list: 1→2→3→4→5 and 𝑛=2
+
+// Initialization:
+// dummy: 0→1→2→3→4→5
+// fast and slow: point to dummy
+// Moving fast n + 1 steps:
+
+// After 1 step: fast points to 1
+// After 2 steps: fast points to 2
+// After 3 steps: fast points to 3
+
+// Moving both pointers until fast reaches the end:
+
+// fast: 4, slow: 1
+// fast: 5, slow: 2
+// fast: 𝑛𝑢𝑙𝑙, slow: 3
+
+// Removing the node:
+
+// slow.next = slow.next.next
+// Adjust 3.next to point to 5
+
+// Final list: 1→2→3→5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Brute Force Approach (Two-Pass Traversal)
+
+// Algorithm :
+// Traverse the linked list to determine its length.
+// Calculate the position of the node to remove from the start of the list.
+// Traverse the linked list again to the calculated position.
+// Remove the node by adjusting the pointers.
+
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        // First pass: calculate the length of the list
+        int length = 0;
+        ListNode current = head;
+        while (current != null) {
+            length++;
+            current = current.next;
+        }
+
+        // Calculate the position to remove from the start
+        int positionToRemove = length - n;
+
+        // If we need to remove the head node
+        if (positionToRemove == 0) {
+            return head.next;
+        }
+
+        // Second pass: traverse to the node just before the target node
+        current = head;
+        for (int i = 0; i < positionToRemove - 1; i++) {
+            current = current.next;
+        }
+
+        // Remove the target node
+        current.next = current.next.next;
+
+        return head;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Complexities
+
+// Brute Force Approach (Two-Pass Traversal)
+
+// Time Complexity:
+// First Pass: Traverse the entire list to determine its length.
+// Time: O(L), where L is the length of the list.
+// Second Pass: Traverse to the node just before the one to be removed.
+// Time: O(L).
+// Overall, the time complexity is: O(L)+O(L) = O(2L) ≈ O(L)
+
+// Space Complexity:
+// The space complexity is O(1) because we only use a few extra variables
+// regardless of the list size.
+
+
+
+
+// Optimal Approach (One-Pass Traversal Using Two Pointers)
+
+// Time Complexity:
+// Move fast Pointer n+1 Steps Ahead:
+// Time: O(n).
+// Move Both Pointers Until fast Reaches the End:
+// Time: O(L−n), where L is the length of the list.
+// Overall, the time complexity is: O(n) + O(L−n) = O(L)
+
+// Space Complexity:
+// The space complexity is O(1) because we only use a few extra variables
+// regardless of the list size.
+
+
+// Both approaches have the same time complexity O(L) and space complexity O(1),
+// but the optimal approach is generally more efficient because it reduces
+// the number of passes over the list from two to one.
