@@ -1,0 +1,275 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+// Approach 1: Brute Force
+// In the brute force approach, we rotate the list one place at a time for k times.
+
+// Steps:
+// Find the length of the linked list.
+// For each rotation, remove the last element and insert it at the beginning.
+// Repeat the process k times.
+
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if(head == null || head.next == null || k== 0) return head;
+
+        // Calculate the length of the list
+        int length = getLength(head);
+
+        // Normalize k to handle cases where k is larger than the length of list
+        k = k % length;
+        if(k == 0) return head;
+
+        // Perform k rotations
+        for(int i=0; i<k; i++) {
+            head = rotateOnce(head);
+        }
+
+        return head;
+    }
+
+    public ListNode rotateOnce(ListNode head) {
+        ListNode prev = null;
+        ListNode current = head;
+        
+        // Traverse to the end of the list
+        while (current.next != null) {
+            prev = current;
+            current = current.next;
+        }
+        
+        // 'current' is the last node and 'prev' is the second last node
+        current.next = head; // Make last node point to the head
+        prev.next = null; // Break the link to the last node
+        head = current; // New head is the last node
+
+        return head;
+    }
+
+    public int getLength(ListNode head) {
+        int length = 0;
+        ListNode current = head;
+        while (current != null) {
+            length++;
+            current = current.next;
+        }
+        return length;
+    }
+}
+
+// Detailed Dry Run
+// Given list: 1 -> 2 -> 3 -> 4 -> 5, k=2
+
+// Step 1: Calculate the length of the list
+
+// Initialize length = 0.
+// Traverse the list to find the length.
+// Current node: 1, Length: 1
+// Current node: 2, Length: 2
+// Current node: 3, Length: 3
+// Current node: 4, Length: 4
+// Current node: 5, Length: 5
+// Length of the list is 5.
+
+// Step 2: Normalize k
+// Normalize k to handle cases where k is larger than the length of the list.
+// k = k % length = 2 % 5 = 2
+
+// Step 3: Rotate the list k times
+// Rotate the list 2 times.
+
+// First Rotation:
+// Traverse to find the second last and last nodes.
+// Current node: 1
+// Current node: 2
+// Current node: 3
+// Current node: 4 (Second last node)
+// Current node: 5 (Last node)
+// Modify the next pointers to remove the last node and insert it at the beginning.
+
+// Second last node: 4 -> next = null
+// Last node: 5 -> next = head (1)
+// New head = last node (5)
+// Resulting list after first rotation:
+// 5 -> 1 -> 2 -> 3 -> 4
+
+// Second Rotation:
+// Traverse to find the second last and last nodes.
+// Current node: 5
+// Current node: 1
+// Current node: 2
+// Current node: 3 (Second last node)
+// Current node: 4 (Last node)
+// Modify the next pointers to remove the last node and insert it at the beginning.
+
+// Second last node: 3 -> next = null
+// Last node: 4 -> next = head (5)
+// New head = last node (4)
+
+// Resulting list after second rotation:
+// 4 -> 5 -> 1 -> 2 -> 3
+
+// Complexity Analysis
+
+// Time Complexity: O(n×k)
+
+// Finding the length of the list takes O(n) time.
+// Each rotation takes O(n) time.
+// Repeating this for O(n×k) time complexity.
+
+// Space Complexity: O(1)
+// We are modifying the list in place without using extra space.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach 2: Using Extra Space
+// We can use an additional array to store the elements of the linked list
+// and rearrange them according to the rotation.
+
+// Steps:
+// Store the elements of the linked list in an array.
+// Rotate the array by k places.
+// Convert the array back to the linked list.
+
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null || head.next == null || k == 0) return head;
+
+        List<ListNode> nodes = new ArrayList<>();
+        ListNode current = head;
+        while (current != null) {
+            nodes.add(current);
+            current = current.next;
+        }
+
+        int len = nodes.size();
+        k = k % len;
+
+        if (k == 0) return head;
+
+        ListNode newHead = nodes.get(len - k);
+        ListNode prevNewHead = nodes.get(len - k - 1);
+
+        prevNewHead.next = null;
+        nodes.get(len - 1).next = head;
+
+        return newHead;
+    }
+}
+
+// Complexity
+// Time Complexity: O(n) - where n is the length of the list.
+// Space Complexity: O(n) - additional array for storing elements.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach 3: Optimized In-Place Rotation
+// We can perform the rotation in-place without using extra space.
+
+// Steps:
+// Calculate the length n of the linked list.
+// Make the list circular by connecting the last node to the first node.
+// Find the new head after n−(k%n) steps from the beginning.
+// Break the circle to form the new list.
+
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null || head.next == null || k == 0) return head;
+
+        // Calculate the length of the list
+        ListNode curr = head;
+        int length = 1;
+        while (curr.next != null) {
+            curr = curr.next;
+            length++;
+        }
+
+        // Make the list circular
+        curr.next = head;
+
+        // Find the new head position after rotation
+        k = k % length;
+        int stepsToNewHead = length - k;
+        ListNode newTail = head;
+        for (int i = 0; i < stepsToNewHead - 1; i++) {
+            newTail = newTail.next;
+        }
+        ListNode newHead = newTail.next;
+
+        // Break the circular list to get the desired list
+        newTail.next = null;
+
+        return newHead;
+    }
+}
+
+// Complexity
+// Time Complexity: O(n) - where n is the length of the list.
+// Space Complexity: O(1) - no extra space required.
+
+
+
+// Summary of Approaches
+
+// Brute Force:
+// Rotate the list one place at a time for k times.
+// Time Complexity: O(n×k)
+// Space Complexity: O(1)
+
+// Using Extra Space:
+// Use an array to rearrange the list.
+// Time Complexity: O(n)
+// Space Complexity: O(n)
+
+// Optimized In-Place Rotation:
+// Calculate the new head directly and rearrange the list.
+// Time Complexity: O(n)
+// Space Complexity: O(1)
+
+// Each of these approaches has its use cases depending on the constraints
+// and requirements of the problem.
+
+
+
