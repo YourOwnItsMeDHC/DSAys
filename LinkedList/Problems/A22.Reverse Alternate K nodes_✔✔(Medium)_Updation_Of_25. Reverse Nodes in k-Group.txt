@@ -1,0 +1,66 @@
+import java.util.* ;
+import java.io.*; 
+/*
+    Following is the class structure of the Node class:
+
+	class Node {
+	    public int data;
+	    public Node next;
+
+	    Node(int data) {
+	        this.data = data;
+	        this.next = null;
+	    }
+	}
+*/
+
+// Enhanced version of - 25. Reverse Nodes in k-Group
+
+// Problem link :
+https://www.naukri.com/code360/problems/reverse-alternate-k-nodes_893077?
+
+public class Solution {
+    public static Node reverseAlternateKNodes(Node head, int k) {
+        // Base case
+		if(head == null || head.next == null || k <= 1) return head;
+
+        // Reverse first k nodes
+		Node curr = head;
+		Node prev = null;
+		Node nextTemp = null;
+		int count = 0;
+
+		while(curr != null && count < k) {
+			nextTemp = curr.next;
+			curr.next = prev;
+			prev = curr;
+			curr = nextTemp;
+			count++;
+		}
+
+        
+
+        // Now head points to the k-th node, so connect it to the next k nodes
+        if(head != null) {
+			head.next = curr;
+		}
+
+        // Skip the next k nodes
+		// already one node is skipped, i.e. now I am at the first node among
+		// k nodes, whcih needs to get skipped, hence, will do "count < k-1"
+		count = 0;
+		while(curr != null && count < k-1) {
+			curr = curr.next;
+			count++;
+		} 
+        
+
+        // Recursively reverse alternate k nodes
+        if(curr != null) {
+			curr.next = reverseAlternateKNodes(curr.next, k);
+		}
+
+        // prev is the new head of the reversed list
+        return prev;
+    }
+}
