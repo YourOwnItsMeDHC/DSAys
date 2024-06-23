@@ -64,3 +64,47 @@ public class Solution {
         return prev;
     }
 }
+
+
+
+
+
+▶▶ Time Complexity Analysis
+
+The time complexity of the reverseAlternateKNodes function can be analyzed as follows:
+
+Traversal and Reversal of k Nodes:
+
+We traverse the list to reverse the first k nodes. This involves iterating through k nodes once,
+which gives us a time complexity of O(k) for this part.
+
+Skipping the next k Nodes:
+
+After reversing the first k nodes, we skip the next k nodes without any modifications, which takes O(k) time.
+
+Recursively Processing the Remaining List:
+
+After skipping k nodes, we recursively call the reverseAlternateKNodes function on the remaining list.
+The size of the remaining list reduces by at least k nodes in each recursive call until we reach the end of the list.
+The number of recursive calls depends on the number of nodes in the list. However, since we process each node a constant number of times
+(either reversing, skipping, or processing recursively), the overall time complexity of the function can be expressed as O(n),
+where n is the number of nodes in the linked list.
+
+
+▶▶ Space Complexity Analysis
+The space complexity of the reverseAlternateKNodes function primarily comes from the recursive calls on the stack:
+
+Recursive Stack Space:
+
+The function is recursive and can potentially have a recursive depth of up to n/k (where k is the size of the subset to be reversed).
+Therefore, the space complexity due to the recursive calls is O(n/k).
+In the worst case, if k is 1 (meaning we are reversing every node individually), the space complexity could be O(n) due to the recursive depth.
+
+Additional Space:
+
+Apart from the stack space, the function uses a constant amount of extra space for variables like prev, next, and count.
+Thus, the overall space complexity is O(n/k), considering the recursive stack space dominates the auxiliary space usage.
+
+Conclusion
+Time Complexity: O(n), where n is the number of nodes in the linked list.
+Space Complexity: O(n/k), where k is the size of the subset of nodes to be reversed.
