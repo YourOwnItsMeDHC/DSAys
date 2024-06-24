@@ -1,0 +1,378 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+
+// Approach - 01 : One Pass
+class Solution {
+    public ListNode reverseEvenLengthGroups(ListNode head) {
+        // If the list has 1 or 2 nodes only, return the head as is
+        if(head == null || head.next == null || head.next.next == null) return head;
+
+        ListNode node = head;
+        int groupSize = 1;
+
+        while(node != null && node.next != null) {
+            groupSize++;
+
+            // Count the nodes in the current group
+            int countNodes = 0;
+            ListNode temp = node.next;
+            while(temp != null && countNodes < groupSize) {
+                temp = temp.next;
+                countNodes++;
+            }
+
+            // If the group size is even, reverse the group
+            if(countNodes % 2 == 0) {
+                ListNode curr = node.next;
+                ListNode prev = null;
+                ListNode nextTemp = null;
+                for(int i=0; i<countNodes; i++) {
+                    nextTemp = curr.next;
+                    curr.next = prev;
+                    prev = curr;
+                    curr = nextTemp;
+                }
+
+                ListNode tail = node.next;  // The start of the group becomes the tail after reversal
+                tail.next = curr;           // Connect tail to the next section of the list
+                node.next = prev;           // Connect the previous part of the list to the reversed head
+                node = tail;                // Move node to the end of the reversed group
+
+            }
+            else {
+                // If the group size is odd, move node to the end of this group
+                // without reversing
+                for(int i=0; i<countNodes; i++) {
+                    node = node.next;
+                }
+            }
+        }
+        return head;
+    }
+}
+
+
+
+// This problem can be broken down into 2 steps:
+
+// Since we need to reverse the nodes in each group with an even length,
+// we need to check length of each group.
+// It it is odd then there is no need to reverse.
+
+// If we need to reverse the N nodes, how to do that? Following is the idea:
+
+// If the structure of the linkedlist is like this:
+
+// 	1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 
+
+// Since group 1 will always have one node. It doesn't need to be reversed.
+
+// We will have node as a pointer :
+
+// 	ListNode node=head;
+// 	int group=1;
+
+// After we have node as the pointer, the linked list will look like this:
+
+// 	1 (node) -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
+
+// Now we will start counting & reversing from 2nd node.
+// To count number of nodes in a group we will use following code:
+
+	
+//     int countNodes=0;
+//     ListNode temp=node.next;
+//      while(temp!=null && countNodes<group)
+// 		 {
+// 			  temp=temp.next;
+//               countNodes++;
+//          }
+
+
+// Suppose that there are even nodes to be reversed, we just use the
+// "reverse linked list" trick to reverse the k nodes.
+// Please refer to "https://leetcode.com/problems/reverse-linked-list/"
+
+// If countNodes is even i.e for second group countNodes= 2,
+// we can reverse 2 to 3 using the following code:
+
+
+// 	ListNode curr=node.next,prev=null,next=null;
+//      for(int i=0;i<countNodes;i++)
+// 		{
+// 			  next=curr.next;
+//               curr.next=prev;
+//               prev=curr;
+//               curr=next;
+//         }    
+
+
+// This is the illustartion of the first 2 steps:
+
+
+
+//     We will begin reversing form 2nd node
+	
+//     Step1: 1 (node)  -> 2      3 -> 4 -> 5 -> 6 -> 7
+// 	Step2: 1 (node)  -> 2 <- 3      4 -> 5 -> 6 -> 7
+
+
+	
+// This is an easy and general algorithm to reverse a linked list.
+// However, if you are careful enough, you will find that after the for-loop,
+// the link from 3 to 4 will be cut (as shown in step 2).
+
+// Now we need to reconstruct the linked list and fix the issue. You will figure out that at step3, the 3 is the prev node, 4 is the curr node.
+
+
+// step2: 1 (node) -> 2 <- 3 (prev)    4 (curr) -> 5 -> 6 -> 7
+
+
+// We can fix the sequence based on the following codes. The basic idea is to link the node to 3 and link 2 to 4:
+
+
+
+// 	ListNode tail=node.next;
+//     tail.next=curr;
+//     node.next=prev;
+//     node=tail;
+
+
+
+// Then the result is:
+
+
+
+// 	after first line:        1 (node) -> 2 (tail)  <- 3 (prev)    4 (curr) -> 5 -> 6 -> 7
+// 	after second line:       1 (node) -> 2 (tail)  <- 3 (prev)    4 (curr) -> 5 -> 6 -> 7
+// 								         |________________________↑
+// 	after third line:   
+// 								 |--------------------↓
+// 						     1 (node)    2 (tail)  <- 3 (prev)    4 (curr) -> 5 -> 6 -> 7
+// 									     |________________________↑
+									   
+// 	after forth line:	     1  -> 3  -> 2  (node) -> 4 -> 5 -> 6 -> 7
+
+
+
+
+// Now we get the new node as pointer, and we can repeat the process.
+
+// Edge Case: if the last group is incomplete, we still need to reverse it if it has even number of elements.
+
+// If group has odd number of nodes then we can skip the reverse process by following code:
+
+
+
+// 	for(int i=0;i<countNodes;i++)
+// 		 node=node.next;
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Complexity Analysis
+
+// Time Complexity:
+
+// Main Loop:
+// The outer while loop runs through all the nodes in the linked list.
+// Each iteration processes a group of nodes, with the group size increasing
+// incrementally (1, 2, 3, ...).
+
+// Counting Nodes in Group:
+// For each group, the inner while loop counts the nodes up to the current
+// group size. This operation is performed once per node in the list over
+// the entire run.
+
+// Reversal of Nodes in Even-Length Groups:
+// For even-length groups, the reversal operation involves iterating through
+// the nodes in the group twice: once for counting and once for the reversal.
+
+// Let's summarize this in terms of time complexity:
+
+// The outer loop iterates O(n) times, where n is the number of nodes in the
+// linked list.
+// The inner operations (counting nodes and optionally reversing them) together
+// take O(k) time for each group, where k is the size of the group.
+// Since the group sizes increase incrementally, the overall number of
+// operations is still linear with respect to n.
+
+// Therefore, the overall time complexity is: O(n)
+
+
+
+// Space Complexity:
+
+// Pointer Variables:
+// The algorithm uses a fixed number of pointer variables (node, temp, curr,
+// prev, nextTemp, tail) and integer variables (groupSize, countNodes),
+// all of which occupy constant space.
+
+// No Extra Data Structures:
+// Unlike the previous version that used a stack, this implementation does not
+// use any additional data structures that grow with input size.
+// Hence, the space complexity is dominated by the constant number of pointers
+// and variables used: O(1)
+
+// Summary ⭐
+// Time Complexity: O(n)
+// Space Complexity: O(1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach - 02 : Using Stack
+class Solution {
+    public ListNode reverseEvenLengthGroups(ListNode head) {
+        // If the list has 1 or 2 nodes only, return the head as is
+        if(head == null || head.next == null || head.next.next == null) return head;
+
+        int groupSize = 1; // Start with group size of 1
+        ListNode currentNode = head;
+
+        while(currentNode != null) {
+            int count = 0;
+            ListNode groupStartNode = currentNode;
+            // In the case of even - "groupStartNode" is reached till "currentNode"
+            // in last pass only, while updating the value by stack value
+            // In the case of odd - we don't need to reversethe nodes, so we can 
+            // directly update "groupStartNode" by "currentNode" at the start of pass itself
+
+            Stack<Integer> stack = new Stack<>();
+
+            // Count the nodes in the current group and push their values to the stack
+            while(count < groupSize && currentNode != null) {
+                stack.push(currentNode.val);
+                currentNode = currentNode.next;
+                count++;
+            }
+
+            // Reverse the values if the group size is even
+            if(count % 2 == 0) {
+                while(groupStartNode != currentNode) {
+                    groupStartNode.val = stack.pop();
+                    groupStartNode = groupStartNode.next;
+                }
+            }
+
+            groupSize++;  // Increment the group size for the next iteration
+        }
+        return head;  // Return the modified list
+    }
+}
+
+
+// 1. Initialization:
+
+// groupSize starts at 1.
+// currentNode is set to the head of the list.
+
+// 2. Main Loop:
+
+// Loop through the list until currentNode becomes null.
+
+// 3. Counting and Stacking:
+
+// For each group, count the nodes and push their values to a stack.
+// Stop if the count reaches the current group size or
+// if the end of the listis reached.
+
+// 4. Check for Even Group Size:
+
+// If the count of nodes in the current group is even, 
+// reverse the node values using the stack.
+// Otherwise, leave the group as it is.
+
+// 5. Increment Group Size:
+
+// Increase the group size for the next iteration.
+
+// This code effectively reverses the values in even-length groups and
+// leaves odd-length groups unchanged. The stack is used to facilitate
+// the reversal of values, and the node traversal is managed within a single loop.
+
+
+
+
+
+// Complexity Analysis
+
+// Time Complexity:
+
+// Main Loop:
+// The outer while loop runs through all the nodes in the linked list.
+// In each iteration, it processes a group of nodes.
+// For each group, the inner while loop counts and
+// processes nodes up to the current group size.
+
+// Stack Operations:
+// Pushing and popping values on and off the stack within each group also takes
+// linear time with respect to the number of nodes in the group.
+
+// Considering these points, let's break it down:
+// The outer loop runs approximately O(n) times,
+// where n is the total numberof nodes in the linked list.
+// For each group, the inner operations (counting, stack manipulation, and
+// reversal) take O(k) time, where k is the size of the group.
+// Since k varies and increases with each group, the total number of
+// operations across all groups still remains linear with respect
+// to n because each node is processed a constant number of times.
+// Thus, the overall time complexity is: O(n)
+
+// Space Complexity:
+
+// Stack Usage:
+// The stack size is at most equal to the size of the largest group being
+// processed. In the worst case, the size of the stack could grow to O(sqrt(n)),
+// where sqrt(n) represents the maximum possible group size as the group sizes
+// increase incrementally (1, 2, 3, ...).
+
+// Pointer Variables:
+// A few additional pointers and integer variables are used, which consume
+// constant space.
+// Combining these considerations, the overall space complexity is
+// primarily determined by the stack usage: 𝑂(𝑛)
+
+// Summary ⭐
+// Time Complexity: O(n)
+// Space Complexity: O(\sqrt{n})
