@@ -1,0 +1,47 @@
+// Approach - 01
+class Solution {
+    public boolean threeConsecutiveOdds(int[] arr) {
+        if(arr.length < 3) return false;
+
+        for(int i=0; i<=arr.length-3; i++) {
+            if(arr[i] % 2 != 0 && arr[i+1] % 2 != 0 && arr[i+2] % 2 != 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+// Approach - 02
+class Solution {
+    public boolean threeConsecutiveOdds(int[] arr) {
+        if(arr.length < 3) return false;
+
+        int count = 0;
+        for(int i=0; i<arr.length; i++) {
+            if(arr[i] % 2 != 0) {
+                count++;               // Increment count, as we have found odd element
+                // If I have found 3 consecutivr odd elements then I need to return / stop
+                if(count == 3) {
+                    return true;
+                }
+            }
+            else {
+                // Consecutive element is not an odd, so we will re-initialize count
+                count = 0;
+            }
+        }
+        return false;
+    }
+}
