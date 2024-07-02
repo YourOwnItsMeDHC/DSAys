@@ -1,0 +1,99 @@
+// Approach - 01 : Using HashSet
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+        // Use a HashSet to store unique elements of nums1
+        Set<Integer> set = new HashSet<>();
+        for(int num : nums1) {
+            set.add(num);
+        }
+
+        // Use a HashSet to store intersection elements
+        Set<Integer> intersectionSet = new HashSet<>();
+        for(int num : nums2) {
+            if(set.contains(num)) {
+                intersectionSet.add(num);
+            }
+        }
+
+        // int[] result = new int[intersectionSet.size()];
+        // int index = 0;
+        // for (int num : intersectionSet) {
+        //     result[index++] = num;
+        // }
+
+        int[] result = intersectionSet.stream().mapToInt(Integer :: intValue).toArray();
+
+        return result;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+// Approach - 02 : Sorting and Two Pointers
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+
+        int i = 0,  j= 0;
+        Set<Integer> intersectionSet = new HashSet<>();
+        while(i < nums1.length && j < nums2.length) {
+            if(nums1[i] < nums2[j]) {
+                i++;
+            }
+            else if(nums1[i] > nums2[j]) {
+                j++;
+            }
+            else {
+                intersectionSet.add(nums1[i]);
+                i++;
+                j++;
+            }
+        }
+
+        int[] result = intersectionSet.stream().mapToInt(Integer :: intValue).toArray();
+
+        return result;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// Approach - 03 : Using Java Streams
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> set = Arrays.stream(nums1)
+                          .boxed()
+                          .collect(Collectors.toSet());
+
+        Set<Integer> intersectionSet = Arrays.stream(nums2)
+                                      .filter(set :: contains)
+                                      .boxed()
+                                      .collect(Collectors.toSet());
+
+        // .boxed() converts each int in the stream to its boxed Integer equivalent.
+
+        int[] result = intersectionSet.stream()
+                       .mapToInt(Integer :: intValue)
+                       .toArray();
+
+        return result;
+    }
+}
