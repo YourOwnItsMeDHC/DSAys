@@ -1,0 +1,57 @@
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> freqMap = new HashMap<>();
+        for(int num : nums1) {
+            freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+        }
+
+        List<Integer> ans = new ArrayList<>();
+        for(int num : nums2) {
+            if(freqMap.containsKey(num) && freqMap.get(num) > 0) {
+                ans.add(num);
+                freqMap.put(num, freqMap.get(num) - 1);
+            }
+        }
+
+        int[] result = ans.stream().mapToInt(Integer :: intValue).toArray();
+
+        return result;
+    }
+}
+
+
+
+
+
+// Why Count Frequencies?
+// Purpose: Counting frequencies of elements in nums1 allows us to efficiently
+// track how many times each element appears.
+
+// Efficiency: By counting frequencies upfront using a HashMap, we avoid the
+// need to repeatedly scan nums1 for each element of nums2. This reduces the
+// time complexity from potentially quadratic to linear in terms of the input size.
+
+// Intersection Logic:
+
+// When iterating through nums2, checking the frequency in freqMap allows us to
+// determine if an element in nums2 also exists in nums1.
+// Decrementing the count in freqMap ensures that we accurately reflect the
+// number of times each element can contribute to the intersection.
+
+
+
+// Why Check freqMap.get(num) > 0?
+
+// Ensuring Remaining Occurrences:
+
+// Checking freqMap.get(num) > 0 ensures that we only add elements to the
+// intersection result (ans) if they still have remaining occurrences in nums1.
+// This condition prevents adding elements that have already been fully used
+// up or are not present in sufficient numbers in nums1.
+
+// Avoiding Overcounting:
+
+// Without this check, we might mistakenly add elements multiple times if they
+// appear more times in nums2 than they do in nums1.
+// This condition ensures that each element contributes to the intersection
+// only as many times as it appears in nums1.
