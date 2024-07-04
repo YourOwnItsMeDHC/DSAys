@@ -1,0 +1,39 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeNodes(ListNode head) {
+        ListNode curr = head.next;  // Start with the node after the first 0
+        int count = 0;
+
+        ListNode dummy = new ListNode();  // Dummy node to simplify the result list construction
+        ListNode temp = dummy;
+
+        while(curr != null) {
+            if(curr.val == 0) {
+                temp.next = new ListNode(count);  // Add the sum to the result list
+                temp = temp.next;  // Move to the next node
+                count = 0;  // Reset count for the next segment
+            }
+            else {
+                count += curr.val;  // Accumulate values between 0s
+            }
+            curr = curr.next;  // Move to the next node
+        }
+        return dummy.next;  // Return the result list skipping the dummy node
+    }
+}
+
+// Time Complexity
+// O(n): Traversing the list once where n is the number of nodes in the
+// linked list.
+
+// Space Complexity
+// O(1): No extra space used except for the result list.
