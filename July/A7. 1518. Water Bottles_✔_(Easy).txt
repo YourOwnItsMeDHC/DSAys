@@ -1,0 +1,53 @@
+class Solution {
+    public int numWaterBottles(int numBottles, int numExchange) {
+        int drink = numBottles;
+        int bottles = numBottles;
+
+        while(bottles >= numExchange) {
+            int newBottles = bottles / numExchange;
+            int remainingBottles = bottles % numExchange;
+            drink += newBottles;
+            bottles = newBottles + remainingBottles;
+        }
+
+        return drink;
+    }
+}
+
+/**
+     * Example dry run:
+     * numBottles = 9, numExchange = 3
+     *
+     * Initial:
+     * drink = 9, bottles = 9
+     *
+     * Iteration 1:
+     * newBottles = 9 / 3 = 3
+     * remainingBottles = 9 % 3 = 0
+     * drink = 9 + 3 = 12
+     * bottles = 3 + 0 = 3
+     *
+     * Iteration 2:
+     * newBottles = 3 / 3 = 1
+     * remainingBottles = 3 % 3 = 0
+     * drink = 12 + 1 = 13
+     * bottles = 1 + 0 = 1
+     *
+     * End:
+     * bottles < numExchange (1 < 3), so exit loop
+     * Total bottles drunk = 13
+     */
+
+    /**
+     * Complexity Analysis:
+     * Time Complexity: O(log(numBottles) / log(numExchange))
+     * - The loop runs as long as bottles >= numExchange.
+     * - Each iteration reduces the number of bottles by a factor of numExchange,
+     *   so the number of iterations is proportional to the logarithm of
+     *   numBottles with base numExchange.
+     *
+     * Space Complexity: O(1)
+     * - We use a fixed amount of extra space for variables (drink, bottles,
+     *   newBottles, remainingBottles),
+     *   which does not depend on the size of the input.
+     */
