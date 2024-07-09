@@ -80,6 +80,16 @@
 
 
 
+*  [Stacks](https://github.com/YourOwnItsMeDHC/DSAys/tree/master/DSA/Stacks) :
+([`Basics` ](https://github.com/YourOwnItsMeDHC/DSAys/tree/master/DSA/Stacks/DSA/src/Basics)) ,
+([`Problems` ](https://github.com/YourOwnItsMeDHC/DSAys/tree/master/DSA/Stacks/DSA/src/Questions))
+
+
+*  [Linked List](https://github.com/YourOwnItsMeDHC/DSAys/tree/master/LinkedList) :
+([`Basics` ](https://github.com/YourOwnItsMeDHC/DSAys/tree/master/LinkedList/Basics/LinkedList/src/Basics)) ,
+([`Problems` ](https://github.com/YourOwnItsMeDHC/DSAys/tree/master/LinkedList/Problems))
+
+
 
 
 
