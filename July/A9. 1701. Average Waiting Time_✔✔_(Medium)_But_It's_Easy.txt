@@ -1,0 +1,79 @@
+class Solution {
+    public double averageWaitingTime(int[][] customers) {
+        long currentTime = 0;
+        long totalWaitingTime = 0;
+
+        for (int[] customer : customers) {
+            int arrivalTime = customer[0];
+            int cookingTime = customer[1];
+
+            // If the chef is idle, update the current time to the arrival time of the customer
+            if (currentTime < arrivalTime) {
+                currentTime = arrivalTime;
+            }
+
+            // Calculate the waiting time for the current customer
+            long waitingTime = currentTime + cookingTime - arrivalTime;
+            totalWaitingTime += waitingTime;
+
+            // Update the current time after cooking the current customer's order
+            currentTime += cookingTime;
+        }
+
+        // Return the average waiting time
+        return (double) totalWaitingTime / customers.length;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// Dry Run with Example
+// Let's dry run the example customers = [[1, 2], [2, 5], [4, 3]]:
+
+// First Customer:
+
+// Arrival time: 1
+// Cooking time: 2
+// current_time is initially 0, which is less than arrival time 1,
+// so current_time is set to 1.
+// Waiting time: 1 (current_time) + 2 (cooking_time) - 1 (arrival_time) = 2
+// Update total_waiting_time to 2.
+// Update current_time to 1 + 2 = 3.
+// Second Customer:
+
+// Arrival time: 2
+// Cooking time: 5
+// current_time is 3, which is greater than arrival time 2,
+// so no change to current_time.
+// Waiting time: 3 (current_time) + 5 (cooking_time) - 2 (arrival_time) = 6
+// Update total_waiting_time to 2 + 6 = 8.
+// Update current_time to 3 + 5 = 8.
+// Third Customer:
+
+// Arrival time: 4
+// Cooking time: 3
+// current_time is 8, which is greater than arrival time 4,
+// so no change to current_time.
+// Waiting time: 8 (current_time) + 3 (cooking_time) - 4 (arrival_time) = 7
+// Update total_waiting_time to 8 + 7 = 15.
+// Update current_time to 8 + 3 = 11.
+// Average Waiting Time:
+
+// Total customers: 3
+// Average waiting time: 15 / 3 = 5.0
+// Time Complexity
+// The time complexity of the optimized approach is O(n),
+// where n is the number of customers.
+// This is because we process each customerexactly once.
+
+// Space Complexity
+// The space complexity is O(1) since we use a constant amount of extra space.
