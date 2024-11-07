@@ -9,7 +9,7 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class A2_BFS_LevelOrderTraversal {
+public class A20_BFS_LevelOrderTraversal {
     public static void main(String[] args) {
         BinaryTree tree = new BinaryTree();
 
